@@ -1,8 +1,8 @@
 # Fordev
 
 You should execute in cmd: 
-npm i
-ng serve
+# npm i
+# ng serve
 
 ## Enjoy it :)
 
