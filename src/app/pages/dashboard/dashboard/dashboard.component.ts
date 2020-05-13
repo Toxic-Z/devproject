@@ -38,20 +38,21 @@ export class DashboardComponent implements OnInit {
 
   private updateEmployeesList(): void {
     console.log('1111111111');
-    this.apiService.fetchEmployees().subscribe((employees: Employee[]) => {
-      this.commonService.changeLoaderVisibility(false);
-      this.employeesList = employees ? [...employees] : [];
-      this.employeesList.forEach((e: Employee) => {
-        this.employeeForms.push(
-          {
-            form: this.initForm(e),
-            id: e.id
-          }
-        );
-      });
-      this.employeeForms = [...this.employeeForms];
-      this.commonService.changeLoaderVisibility(false);
-    });
+    console.log(this.apiService.fetchEmployees());
+    // this.apiService.fetchEmployees().subscribe((employees: Employee[]) => {
+    //   this.commonService.changeLoaderVisibility(false);
+    //   this.employeesList = employees ? [...employees] : [];
+    //   this.employeesList.forEach((e: Employee) => {
+    //     this.employeeForms.push(
+    //       {
+    //         form: this.initForm(e),
+    //         id: e.id
+    //       }
+    //     );
+    //   });
+    //   this.employeeForms = [...this.employeeForms];
+    //   this.commonService.changeLoaderVisibility(false);
+    // });
   }
 
   private initForm(employee: Employee): FormGroup {
