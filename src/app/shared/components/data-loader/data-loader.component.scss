@@ -1,0 +1,35 @@
+$color-primary: #053162;
+$color-background-dark-grey: #ebebeb;
+$color-error: #e74c3c;
+$color-success: #27ae60;
+.loader {
+  background: #ffffff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+
+  span {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    left: calc(50% - 18px);
+    top: calc(50% - 18px);
+    animation: spin 1s linear infinite;
+    border: 3px solid $color-primary;
+    border-top: 3px solid $color-background-dark-grey;
+    border-radius: 50%;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

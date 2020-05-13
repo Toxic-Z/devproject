@@ -1,0 +1,34 @@
+<mat-toolbar
+  color="primary"
+  class="menu"
+>
+  <div class="d-flex w-100 justify-content-between">
+    <div class="d-flex w-50 justify-content-between">
+      <h5
+        class="cursor-pointer"
+      >
+        Wellcome!
+      </h5>
+      <button
+        *ngIf="isLoggedIn|async"
+        [disabled]="router.url.includes('admin')"
+        (click)="navigate('admin')"
+        mat-stroked-button
+        color="accent"
+      >Admin panel</button>
+      <button
+        *ngIf="isLoggedIn|async"
+        [disabled]="router.url.includes('dashboard')"
+        (click)="navigate('dashboard')"
+        mat-stroked-button
+        color="accent"
+      >Dashboard</button>
+    </div>
+    <mat-icon
+      *ngIf="isLoggedIn|async"
+      class="cursor-pointer"
+      matTooltip="Log out"
+      (click)="navigate('logout')"
+    >power_settings_new</mat-icon>
+  </div>
+</mat-toolbar>
