@@ -10,6 +10,5 @@ export interface Employee {
   addDate: Date;
   salary: number;
   position: string;
-  __v?: number;
   id: number;
 }

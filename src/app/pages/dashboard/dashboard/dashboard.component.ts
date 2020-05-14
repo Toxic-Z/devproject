@@ -33,26 +33,32 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.apiService.clearDb('people');
     this.updateEmployeesList();
+
   }
 
   private updateEmployeesList(): void {
-    console.log('1111111111');
-    console.log(this.apiService.fetchEmployees());
-    // this.apiService.fetchEmployees().subscribe((employees: Employee[]) => {
-    //   this.commonService.changeLoaderVisibility(false);
-    //   this.employeesList = employees ? [...employees] : [];
-    //   this.employeesList.forEach((e: Employee) => {
-    //     this.employeeForms.push(
-    //       {
-    //         form: this.initForm(e),
-    //         id: e.id
-    //       }
-    //     );
-    //   });
-    //   this.employeeForms = [...this.employeeForms];
-    //   this.commonService.changeLoaderVisibility(false);
-    // });
+    this.apiService.fetchEmployees()
+      .then(
+        (employees: Employee[]) => {
+          this.commonService.changeLoaderVisibility(false);
+          this.employeesList = employees ? [...employees] : [];
+          this.employeesList.forEach((e: Employee) => {
+            this.employeeForms.push(
+              {
+                form: this.initForm(e),
+                id: e.id
+              }
+            );
+          });
+          this.employeeForms = [...this.employeeForms];
+          this.commonService.changeLoaderVisibility(false);
+        },
+        (error => {
+          this.showMessage(error);
+        })
+      );
   }
 
   private initForm(employee: Employee): FormGroup {
@@ -147,7 +153,6 @@ export class DashboardComponent implements OnInit {
 
   public fetchFilteredList(): Employee[] {
     const temporaryArray = [...this.employeesList];
-    console.log(temporaryArray, 'filtered list');
     if (this.searchKeyWord) {
       return temporaryArray.filter((e: Employee) => e.name.toLocaleLowerCase().includes(this.searchKeyWord));
     } else {
@@ -189,8 +194,6 @@ export class DashboardComponent implements OnInit {
   }
 
   public toEditList(employee: Employee): void {
-    console.log('toeditlist', employee);
-    console.log('toeditlist', this.employeesList);
     if (!this.editableList.includes(employee.id)) {
       this.editableList.push(employee.id);
       this.initialStateOfEmployees.push(employee);
@@ -223,18 +226,19 @@ export class DashboardComponent implements OnInit {
   }
 
   public deleteEmployee(id: number): void {
-    this.apiService.deleteEmployee(id).subscribe((r: boolean) => {
-      if (r) {
+    this.apiService.deleteEmployee(id).then(
+      () => {
         this.commonService.changeLoaderVisibility(false);
         this.updateEmployeesList();
         this.showMessage('Deleted successfully!');
+      },
+      error => {
+        this.showMessage(`Error: ${error}`);
       }
-    });
+    );
   }
 
   public toAction(employee: Employee, type: string): void {
-    console.log('type', type, 'action');
-    console.log(this.employeesList);
     const form = this.findForm(employee.id).value;
     const value: Employee = {
       name: form.name,
@@ -258,23 +262,29 @@ export class DashboardComponent implements OnInit {
         switch (type) {
           case 'edit':
             if (employee.id === this.newItemsIdIndex && this.findForm(employee.id).valid) {
-              this.apiService.createEmployee(value).subscribe((e: boolean) => {
-                if (e) {
+              this.apiService.createEmployee(value).then(
+                () => {
                   this.newItemsIdIndex = Math.random();
                   this.updateEmployeesList();
                   this.fromEditList(value);
                   this.isCreating = false;
                   this.showMessage('Created successfully!');
+                },
+                error => {
+                  this.showMessage(`Error: ${error}`);
                 }
-              });
+              );
             } else if (this.findForm(employee.id).valid) {
-              this.apiService.updateEmployee(value).subscribe((e: boolean) => {
-                if (e) {
+              this.apiService.updateEmployee(value).then(
+                () => {
                   this.updateEmployeesList();
                   this.fromEditList(value);
                   this.showMessage('Updated successfully!');
+                },
+                error => {
+                  this.showMessage(`Error: ${error}`);
                 }
-              });
+              );
             } else {
               this.showMessage('Form validation error!');
             }

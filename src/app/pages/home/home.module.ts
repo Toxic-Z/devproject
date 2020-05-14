@@ -7,14 +7,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent},
+  { path: 'login', component: LoginComponent},
 ];
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, LoginComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

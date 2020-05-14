@@ -1,55 +1,10 @@
-<div class="d-flex w-100 justify-content-center align-items-center">
-  <div
-    *ngIf="!(isLoggedIn|async)"
-    class="d-flex flex-column mt-5 mw-250px"
-    [formGroup]="form">
-    <mat-form-field appearance="legacy">
-      <mat-label>Enter your e-mail</mat-label>
-      <input
-        matInput
-        formControlName="login"
-      >
-      <mat-icon
-        class="cursor-pointer"
-        matTooltip="Enter a valid e-mail please"
-        *ngIf="form.controls.login.errors && form.controls.login.touched"
-        matSuffix
-      >error_outline</mat-icon>
-    </mat-form-field>
-    <mat-form-field appearance="legacy">
-      <mat-label>Enter your password</mat-label>
-      <input
-        matInput
-        formControlName="password"
-        [type]="hide ? 'password' : 'text'">
-      <mat-icon
-        class="cursor-pointer"
-        (click)="hide = !hide"
-        matSuffix
-      >{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      <mat-icon
-        class="cursor-pointer"
-        matTooltip="Password field is required and should be more than 6 symbols"
-        *ngIf="form.controls.password.errors && form.controls.password.touched"
-        matSuffix
-      >error_outline</mat-icon>
-    </mat-form-field>
-    <div class="d-flex w-100 justify-content-between">
-      <button
-        [disabled]="form.invalid"
-        (click)="signUp()"
-        mat-raised-button
-        color="primary">Sign up</button>
-      <button
-        [disabled]="form.invalid"
-        (click)="logIn()"
-        mat-raised-button
-        color="primary"
-      >Log in</button>
-    </div>
-  </div>
-  <h3
-    class="mt-5"
-    *ngIf="isLoggedIn|async"
-  >Great! Now you can navigate to admin panel or dashboard...</h3>
+<div class="ml-2 d-flex w-100 justify-content-start align-items-center">
+  <h5
+    class="mt-4"
+  >You can fill the form below or login
+    <span
+      routerLink="login"
+      class="cursor-pointer link"
+    >there</span>
+  </h5>
 </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user';
 import { Observable, of, Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import {NgxIndexedDBService} from 'ngx-indexed-db';
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +20,14 @@ export class AuthService {
   mockedUsers: Subject<User[]> = new Subject();
 
   constructor(
+    private dbService: NgxIndexedDBService,
     private router: Router
   ) {
     this.mockedUsers.next(this.users);
   }
 
-  public signUp(data: User): Observable<boolean> {
-    if (this.users.findIndex((u: User) => u.login === data.login) >= 0) {
-      return of(false);
-    } else {
-      this.users.push(data);
-      this.mockedUsers.next(this.users);
-      this.currentUser = data;
-      this.isLogBool = true;
-      this.isLog.next(true);
-      return of(true);
-    }
+  public signUp(data: User): Promise<any> {
+    return this.dbService.add('users', data);
   }
 
   public logOut(): void {

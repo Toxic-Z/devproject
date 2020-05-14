@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../shared/services/auth.service';
-import {User} from '../../../shared/interfaces/user';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   providers: [
     MatSnackBar
   ]
 })
-export class HomeComponent implements OnInit {
+export class LoginComponent implements OnInit {
+
   isLoggedIn: Observable<boolean>;
   form = new FormGroup({
     login: new FormControl('', [
@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
     ])
   });
   hide = true;
+
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
@@ -37,10 +38,26 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
-  private openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Done', {
       duration: 2000,
     });
+  }
+
+  public signUp() {
+    this.authService.signUp({
+      login: this.form.get('login').value,
+      password: this.form.get('password').value
+    }).then(
+      (rr) => {
+        console.log(rr);
+        this.openSnackBar('Successfully created!');
+      },
+      () => {
+        this.openSnackBar('This user exists!');
+      }
+    );
   }
 
   public logIn() {
@@ -49,9 +66,9 @@ export class HomeComponent implements OnInit {
       password: this.form.get('password').value
     }).subscribe((res: boolean) => {
       if (res) {
-        this.openSnackBar('Successfully!', 'Done');
+        this.openSnackBar('Successfully!');
       } else {
-        this.openSnackBar('Wrong user or password', 'Done');
+        this.openSnackBar('Wrong user or password');
       }
     });
   }

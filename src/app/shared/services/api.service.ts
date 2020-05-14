@@ -12,76 +12,42 @@ import {NgxIndexedDBService} from 'ngx-indexed-db';
 export class ApiService {
 
   // private url = environment.apiUrl + 'employees/'; -- for real http
-  private employees: Employee[] = [];
-  private mockedEmployees: Subject<Employee[]> = new Subject();
   constructor(
     // private httpClient: HttpClient, -- for real http
     private commonService: CommonService,
     private dbService: NgxIndexedDBService
   ) {
-    // this.mockedEmployees.next([]);
   }
 
-  public fetchEmployees(): void {
-    this.dbService.add('people', { name: 'name', email: 'email', id: Math.random() }).then(
-      employees => {
-        console.log(employees);
-        return employees;
+  public clearDb(name: string) {
+    this.dbService.clear(name).then(
+      () => {
+        console.log('Successfully cleaned!');
       },
       error => {
         console.log(error);
       }
     );
-    this.dbService.getAll('people').then(
-      people => {
-        console.log(people);
-        return people;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    console.log('5555555555');
+  }
+  public fetchEmployees(): Promise<Employee[]> {
+    return this.dbService.getAll('employees');
     // return this.mockedEmployees.asObservable();
     // return this.httpClient.get<Employee[]>(this.url); --for real http
   }
 
-  public updateEmployee(employee: Employee): void {
-    this.commonService.changeLoaderVisibility(true);
-    // console.log(this.employees);
-    // console.log(this.employees.findIndex((e: Employee) => e.id === employee.id));
-    // const index = this.employees.findIndex((e: Employee) => e.id === employee.id);
-    // this.employees[index] = employee;
-    // this.employees = [...this.employees];
-    // this.mockedEmployees.next(this.employees);
-    this.dbService.update('employees', employee).then(
-      res => {
-        console.log(res);
-        // return this.httpClient.put<boolean>(this.url + employee._id, employee); --for real http
-        return of(true);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+  public updateEmployee(employee: Employee): Promise<any> {
+    return this.dbService.update('employees', employee);
+    // return this.httpClient.put<boolean>(this.url + employee._id, employee); --for real http
+
   }
 
-  public createEmployee(employee: Employee): Observable<boolean> {
-    console.log(employee);
-    this.employees.push(employee);
-    this.employees = [...this.employees];
-    this.mockedEmployees.next(this.employees);
-    console.log(this.employees);
-    return of(true);
+  public createEmployee(employee: Employee): Promise<any> {
+    return this.dbService.add('employees', employee);
     // return this.httpClient.post<boolean>(this.url, employee); --for real http
   }
 
-  public deleteEmployee(id: number): Observable<boolean> {
-    this.commonService.changeLoaderVisibility(true);
-    const index = this.employees.findIndex((e: Employee) => e.id === id);
-    this.employees.splice(index, 1);
-    this.mockedEmployees.next(this.employees);
-    return of(true);
+  public deleteEmployee(id: number): Promise<any> {
+    return this.dbService.delete('employees', id);
     // return this.httpClient.delete<boolean>(this.url + id); --for real http
   }
 }
