@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
+import {MatListModule} from '@angular/material/list';
 
 
 const routes: Routes = [
@@ -17,14 +18,15 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomeComponent, LoginComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatInputModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatTooltipModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatListModule
+    ]
 })
 export class HomeModule { }

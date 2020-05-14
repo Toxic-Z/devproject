@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { User } from '../../../shared/interfaces/user';
 
 @Component({
   selector: 'app-login',
@@ -46,12 +47,13 @@ export class LoginComponent implements OnInit {
   }
 
   public signUp() {
-    this.authService.signUp({
+    const data = {
       login: this.form.get('login').value,
       password: this.form.get('password').value
-    }).then(
-      (rr) => {
-        console.log(rr);
+    };
+    this.authService.signUp(data).then(
+      () => {
+        this.logIn();
         this.openSnackBar('Successfully created!');
       },
       () => {
@@ -61,15 +63,33 @@ export class LoginComponent implements OnInit {
   }
 
   public logIn() {
-    this.authService.logIn({
+    const data = {
       login: this.form.get('login').value,
       password: this.form.get('password').value
-    }).subscribe((res: boolean) => {
-      if (res) {
-        this.openSnackBar('Successfully!');
-      } else {
-        this.openSnackBar('Wrong user or password');
+    };
+    this.authService.logIn(data).then(
+      (user: User) => {
+        if (user.password === data.password) {
+          this.openSnackBar('Successfully!');
+          this.authService.isLoggedIn();
+          this.authService.setCurrUser(data).then(
+            () => {
+              this.router.navigate(['dashboard']);
+              location.reload();
+            },
+            error => {
+              console.log(error);
+              this.openSnackBar(`${error}`);
+            }
+          );
+        } else {
+          this.openSnackBar('Wrong user or password');
+        }
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar(error);
       }
-    });
+    );
   }
 }

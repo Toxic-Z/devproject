@@ -26,7 +26,19 @@ export class AuthService {
     this.mockedUsers.next(this.users);
   }
 
+  public clearDb(name: string) {
+    this.dbService.clear(name).then(
+      () => {
+        console.log('Successfully cleaned!');
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
   public signUp(data: User): Promise<any> {
+    this.clearDb('currUser');
     return this.dbService.add('users', data);
   }
 
@@ -34,28 +46,35 @@ export class AuthService {
     this.currentUser = null;
     this.isLog.next(false);
     this.isLogBool = false;
+    this.clearDb('currUser');
     this.router.navigate(['']);
   }
 
-  public logIn(data: User): Observable<boolean> {
-    const index = this.users.findIndex((u: User) => u.login === data.login);
-    if (index < 0) {
-      return of(false);
-    } else if (this.users[index].password === data.password) {
-      this.currentUser = data;
-      this.isLog.next(true);
-      this.isLogBool = true;
-      return of(true);
-    } else {
-      return of(false);
-    }
+  public logIn(data: User): Promise<any> {
+    this.clearDb('currUser');
+    return this.dbService.getByIndex('users', 'login', data.login);
   }
 
-  public fetchCurrentUser(): User {
-    return this.currentUser;
+  public setCurrUser(user: User): Promise<any> {
+    return this.dbService.add('currUser', user);
+  }
+
+  public fetchCurrentUser(): Promise<any> {
+    return this.dbService.getAll('currUser');
   }
 
   public isLoggedIn(): Observable<boolean> {
+    this.dbService.getAll('currUser').then(
+      (user: User[]) => {
+        if (user.length) {
+          this.isLog.next(true);
+          this.isLogBool = true;
+        } else {
+          this.isLog.next(false);
+          this.isLogBool = false;
+        }
+      }
+    );
     return this.isLog.asObservable();
   }
 }

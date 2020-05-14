@@ -33,9 +33,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiService.clearDb('people');
     this.updateEmployeesList();
-
   }
 
   private updateEmployeesList(): void {

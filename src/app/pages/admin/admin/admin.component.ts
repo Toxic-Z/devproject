@@ -14,7 +14,9 @@ export class AdminComponent implements OnInit {
   constructor(
     private authService: AuthService
   ) {
-    this.currUser = this.authService.fetchCurrentUser();
+    this.authService.fetchCurrentUser().then(
+      user => this.currUser = user[0]
+    );
   }
 
   ngOnInit(): void {

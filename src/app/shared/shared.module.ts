@@ -24,7 +24,7 @@ export function migrationFactory() {
 }
 const dbConfig: DBConfig  = {
   name: 'Database',
-  version: 2,
+  version: 3,
   objectStoresMeta: [
     {
       store: 'employees',
@@ -41,6 +41,14 @@ const dbConfig: DBConfig  = {
     },
     {
       store: 'users',
+      storeConfig: { keyPath: 'login', autoIncrement: false },
+      storeSchema: [
+        { name: 'login', keypath: 'login', options: { unique: true }},
+        { name: 'password', keypath: 'password', options: { unique: false }}
+      ]
+    },
+    {
+      store: 'currUser',
       storeConfig: { keyPath: 'login', autoIncrement: false },
       storeSchema: [
         { name: 'login', keypath: 'login', options: { unique: true }},

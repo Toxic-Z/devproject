@@ -31,7 +31,6 @@ export class ApiService {
   }
   public fetchEmployees(): Promise<Employee[]> {
     return this.dbService.getAll('employees');
-    // return this.mockedEmployees.asObservable();
     // return this.httpClient.get<Employee[]>(this.url); --for real http
   }
 

@@ -5,6 +5,9 @@ import {User} from '../../../shared/interfaces/user';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {CommonService} from '../../../shared/services/common.service';
+import {Employee} from '../../../shared/interfaces/employee';
+import {ApiService} from '../../../shared/services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -17,19 +20,56 @@ import {Observable} from 'rxjs';
 export class HomeComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   form = new FormGroup({
-    login: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6)
-    ])
+    name: new FormControl(null,
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20)]),
+    gender: new FormControl('m',
+      [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(1)]),
+    salary: new FormControl(null,
+      [
+        Validators.required,
+        Validators.min(500),
+        Validators.max(5000000)]),
+    position: new FormControl(null,
+      [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(15)]),
+    city: new FormControl(null,
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(15)]),
+    street: new FormControl(null,
+      [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(20)]),
+    addN: new FormControl(null,
+      [
+        Validators.maxLength(3)]),
+    email: new FormControl(null,
+      [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(6),
+        Validators.maxLength(30)]),
+    houseN: new FormControl(null,
+      [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(9999)])
   });
-  hide = true;
   constructor(
+    private commonService: CommonService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
+    private apiService: ApiService,
     private router: Router
   ) {
   }
@@ -37,22 +77,44 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
-  private openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Done', {
       duration: 2000,
     });
   }
 
-  public logIn() {
-    this.authService.logIn({
-      login: this.form.get('login').value,
-      password: this.form.get('password').value
-    }).subscribe((res: boolean) => {
-      if (res) {
-        this.openSnackBar('Successfully!', 'Done');
-      } else {
-        this.openSnackBar('Wrong user or password', 'Done');
-      }
-    });
+  public onclick(type: string) {
+    if (type === 'reset') {
+      this.form.reset();
+    }
+    if (type === 'save') {
+      const value: Employee = {
+        name: this.form.get('name').value,
+        position: this.form.get('position').value,
+        salary: this.form.get('salary').value,
+        gender: this.form.get('gender').value,
+        contactInfo: {
+          email: this.form.get('email').value,
+          address: {
+            city: this.form.get('city').value,
+            addN: this.form.get('addN').value,
+            street: this.form.get('street').value,
+            houseN: this.form.get('houseN').value
+          }
+        },
+        id: Math.random()
+      };
+      value.addDate = new Date();
+      this.apiService.createEmployee(value).then(
+        () => {
+          this.form.reset();
+          this.openSnackBar('Created successfully!');
+        },
+        error => {
+          this.openSnackBar(`Error: ${error}`);
+        }
+      );
+    }
   }
 }
