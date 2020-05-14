@@ -19,16 +19,6 @@ export class ApiService {
   ) {
   }
 
-  public clearDb(name: string) {
-    this.dbService.clear(name).then(
-      () => {
-        console.log('Successfully cleaned!');
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
   public fetchEmployees(): Promise<Employee[]> {
     return this.dbService.getAll('employees');
     // return this.httpClient.get<Employee[]>(this.url); --for real http
