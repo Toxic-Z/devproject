@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 import {SharedModule} from '../../shared/shared.module';
+import {DragDropDirective} from './home/drag-drop.directive';
 
 
 const routes: Routes = [
@@ -19,7 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HomeComponent, LoginComponent],
+  declarations: [HomeComponent, LoginComponent, DragDropDirective],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -29,8 +30,7 @@ const routes: Routes = [
     MatButtonModule,
     MatTooltipModule,
     MatListModule,
-    MatCardModule,
-    SharedModule
+    MatCardModule
   ]
 })
 export class HomeModule { }

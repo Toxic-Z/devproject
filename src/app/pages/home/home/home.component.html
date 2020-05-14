@@ -62,17 +62,22 @@
             *ngIf="form.controls.salary.errors && form.controls.salary.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
-        <div
-          class="uploadfilecontainer"
-          (click)="fileInput.click()"
-          appDragndrop
-          (FileDropped)="uploadFile($event)">
-          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+        <div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
+          <input
+            hidden
+            type="file"
+            #fileInput
+            (change)="uploadFile($event.target.files)">
         </div>
-        <div  class="files-list" *ngFor="let file of files;let i= index">
-          <p> {{ file }} </p>
-          <button class="delete-file" (click)="deleteAttachment(i)">
-            <img src="../../assets/Recycle_Bin_Full.png">
+        <div
+          class="files-list"
+          *ngFor="let file of files; let i = index">
+          <p>{{file}}</p>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteAttachment(i)">
+            <mat-icon>delete</mat-icon>
           </button>
         </div>
         <mat-form-field
@@ -82,8 +87,8 @@
           <textarea
             matInput
             mat-autosize
-            matAutosizeMaxRows="5"
-            matAutosizeMinRows="2"
+            matAutosizeMaxRows="15"
+            matAutosizeMinRows="7"
             placeholder="Introduce yourself!"></textarea>
         </mat-form-field>
         <!--        <div-->
