@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../shared/services/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
+import { Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../shared/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
