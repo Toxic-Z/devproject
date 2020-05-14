@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     };
     this.authService.logIn(data).then(
       (user: User) => {
-        if (user.password === data.password) {
+        if (user && user.password === data.password) {
           this.openSnackBar('Successfully!');
           this.authService.isLoggedIn();
           this.authService.setCurrUser(data).then(
