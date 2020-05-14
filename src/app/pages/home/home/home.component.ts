@@ -19,6 +19,7 @@ import {ApiService} from '../../../shared/services/api.service';
 })
 export class HomeComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
+  files: any = [];
   form = new FormGroup({
     name: new FormControl(null,
       [
@@ -84,6 +85,15 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  uploadFile(event) {
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      this.files.push(element.name)
+    }
+  }
+  deleteAttachment(index) {
+    this.files.splice(index, 1)
+  }
   public onclick(type: string) {
     if (type === 'reset') {
       this.form.reset();

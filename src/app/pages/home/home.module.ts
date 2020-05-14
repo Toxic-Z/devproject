@@ -9,6 +9,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
 import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
+import {SharedModule} from '../../shared/shared.module';
 
 
 const routes: Routes = [
@@ -18,15 +20,17 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomeComponent, LoginComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        MatInputModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatTooltipModule,
-        MatListModule
-    ]
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatListModule,
+    MatCardModule,
+    SharedModule
+  ]
 })
 export class HomeModule { }

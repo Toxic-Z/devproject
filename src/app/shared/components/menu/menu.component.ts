@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
-import {log} from 'util';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MenuComponent implements OnInit {
   isLoggedIn: Observable<boolean>;

@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from '../app-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {DBConfig, NgxIndexedDBModule} from 'ngx-indexed-db';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { DragndropDirective } from './directives/dragndrop.directive';
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
   // to be modified so a migrator for that version is not included.
@@ -59,10 +60,11 @@ const dbConfig: DBConfig  = {
   migrationFactory
 };
 @NgModule({
-    declarations: [DataLoaderComponent, MenuComponent],
+    declarations: [DataLoaderComponent, MenuComponent, DragndropDirective],
   exports: [
     DataLoaderComponent,
-    MenuComponent
+    MenuComponent,
+    DragndropDirective
   ],
     imports: [
         CommonModule,
