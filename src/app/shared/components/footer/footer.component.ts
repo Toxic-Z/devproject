@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -8,7 +9,9 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public router: Router
+  ) { }
 
   ngOnInit(): void {
   }

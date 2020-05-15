@@ -15,7 +15,9 @@
           class="crop pt-1"
         >work</mat-icon>
       </div>
-      <span class="link">Home</span>
+      <span
+        (click)="navigate('root')"
+        class="link">Home</span>
       <div
         [matMenuTriggerFor]="courses"
         class="d-flex cursor-pointer">
@@ -45,22 +47,26 @@
         <button mat-menu-item>Team</button>
         <button mat-menu-item>Community</button>
       </mat-menu>
-<!--      <button-->
-<!--        *ngIf="isLoggedIn|async"-->
-<!--        [disabled]="router.url.includes('admin')"-->
-<!--        (click)="navigate('admin')"-->
-<!--        mat-stroked-button-->
-<!--        color="accent"-->
-<!--      >Admin panel</button>-->
-<!--      <button-->
-<!--        *ngIf="isLoggedIn|async"-->
-<!--        [disabled]="router.url.includes('dashboard')"-->
-<!--        (click)="navigate('dashboard')"-->
-<!--        mat-stroked-button-->
-<!--        color="accent"-->
-<!--      >Dashboard</button>-->
     </div>
-    <button mat-raised-button color="warn">Authorization</button>
+    <button
+      *ngIf="isLoggedIn|async"
+      [disabled]="router.url.includes('admin')"
+      (click)="navigate('admin')"
+      mat-raised-button
+      color="accent"
+    >Admin panel</button>
+    <button
+      *ngIf="isLoggedIn|async"
+      [disabled]="router.url.includes('dashboard')"
+      (click)="navigate('dashboard')"
+      mat-raised-button
+      color="accent"
+    >Dashboard</button>
+    <button
+      mat-raised-button
+      *ngIf="!(isLoggedIn|async)"
+      (click)="navigate('login')"
+      color="warn">Authorization</button>
     <mat-icon
       *ngIf="isLoggedIn|async"
       class="cursor-pointer"

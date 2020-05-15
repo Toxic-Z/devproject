@@ -13,7 +13,7 @@ export class MenuComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   constructor(
     private authService: AuthService,
-    public router: Router
+    private router: Router
   ){}
 
   ngOnInit(): void {
@@ -22,6 +22,12 @@ export class MenuComponent implements OnInit {
 
   public navigate(type: string): void {
     switch (type) {
+      case 'root':
+        this.router.navigate(['']);
+        break;
+      case 'login':
+        this.router.navigate(['login']);
+        break;
       case 'logout':
         this.authService.logOut();
         break;

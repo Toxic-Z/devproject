@@ -19,52 +19,44 @@ import {ApiService} from '../../../shared/services/api.service';
 })
 export class HomeComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
+  count = 0;
   files: any = [];
+  // phoneArray: {count: number, value: string}[] = [
+  //   {
+  //     count: this.count,
+  //     value: ''
+  //   }
+  // ];
   form = new FormGroup({
     name: new FormControl(null,
       [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20)]),
-    gender: new FormControl('m',
-      [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(1)]),
-    salary: new FormControl(null,
-      [
-        Validators.required,
-        Validators.min(500),
-        Validators.max(5000000)]),
-    position: new FormControl(null,
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(15)]),
-    city: new FormControl(null,
-      [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(15)]),
-    street: new FormControl(null,
-      [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20)]),
-    addN: new FormControl(null,
-      [
-        Validators.maxLength(3)]),
     email: new FormControl(null,
       [
         Validators.required,
         Validators.email,
         Validators.minLength(6),
         Validators.maxLength(30)]),
-    houseN: new FormControl(null,
+    phone: new FormControl(null,
       [
         Validators.required,
-        Validators.min(1),
-        Validators.max(9999)])
+        Validators.minLength(9),
+        Validators.maxLength(10)]),
+    age: new FormControl(null,
+      [
+        Validators.required,
+        Validators.min(14),
+        Validators.max(100)]),
+    photo: new FormControl(null,
+      [
+        Validators.required]),
+    resume: new FormControl(null,
+      [
+        Validators.required,
+        Validators.minLength(30),
+        Validators.maxLength(300)])
   });
   constructor(
     private commonService: CommonService,
@@ -73,6 +65,14 @@ export class HomeComponent implements OnInit {
     private apiService: ApiService,
     private router: Router
   ) {
+    // this.phoneArray.forEach(i => {
+    //   this.form.addControl(`phone${i.count}`,  new FormControl(null,
+    //     [
+    //       Validators.required,
+    //       Validators.minLength(9),
+    //       Validators.maxLength(10)]));
+    //   this.count++;
+    // });
   }
 
   ngOnInit(): void {
@@ -85,15 +85,27 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  uploadFile(event) {
+  public uploadFile(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      this.files.push(element.name)
+      this.files.push(element);
     }
   }
-  deleteAttachment(index) {
-    this.files.splice(index, 1)
+
+  public deleteAttachment(index) {
+    this.files.splice(index, 1);
+    this.form.get('photo').setValue(null);
   }
+
+  // public addPhone() {
+  //   this.form.addControl(`phone${this.phoneIndex}`, new FormControl(null,
+  //     [
+  //       Validators.required,
+  //       Validators.minLength(9),
+  //       Validators.maxLength(10)]));
+  //   this.phoneIndex++;
+  // }
+
   public onclick(type: string) {
     if (type === 'reset') {
       this.form.reset();
@@ -101,23 +113,17 @@ export class HomeComponent implements OnInit {
     if (type === 'save') {
       const value: Employee = {
         name: this.form.get('name').value,
-        position: this.form.get('position').value,
-        salary: this.form.get('salary').value,
-        gender: this.form.get('gender').value,
-        contactInfo: {
-          email: this.form.get('email').value,
-          address: {
-            city: this.form.get('city').value,
-            addN: this.form.get('addN').value,
-            street: this.form.get('street').value,
-            houseN: this.form.get('houseN').value
-          }
-        },
+        email: this.form.get('email').value,
+        phone: this.form.get('phone').value,
+        photo: this.form.get('photo').value,
+        age: this.form.get('age').value,
+        resume: this.form.get('resume').value,
         id: Math.random()
       };
       value.addDate = new Date();
       this.apiService.createEmployee(value).then(
         () => {
+          this.files = [];
           this.form.reset();
           this.openSnackBar('Created successfully!');
         },

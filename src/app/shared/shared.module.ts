@@ -9,8 +9,8 @@ import { AppRoutingModule } from '../app-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 import { FooterComponent } from './components/footer/footer.component';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
   // to be modified so a migrator for that version is not included.
@@ -31,14 +31,15 @@ const dbConfig: DBConfig  = {
   objectStoresMeta: [
     {
       store: 'employees',
-      storeConfig: { keyPath: 'id', autoIncrement: false },
+      storeConfig: { keyPath: 'email', autoIncrement: false },
       storeSchema: [
         { name: 'name', keypath: 'name', options: { unique: false }},
-        { name: 'gender', keypath: 'gender', options: { unique: false }},
-        { name: 'contactInfo', keypath: 'contactInfo', options: { unique: false }},
+        { name: 'email', keypath: 'email', options: { unique: false }},
+        { name: 'phone', keypath: 'phone', options: { unique: false }},
         { name: 'addDate', keypath: 'addDate', options: { unique: false }},
-        { name: 'salary', keypath: 'salary', options: { unique: false }},
-        { name: 'position', keypath: 'position', options: { unique: false }},
+        { name: 'age', keypath: 'age', options: { unique: false }},
+        { name: 'resume', keypath: 'resume', options: { unique: false }},
+        { name: 'photo', keypath: 'photo', options: { unique: false }},
         { name: 'id', keypath: 'id', options: { unique: true }}
       ]
     },

@@ -38,16 +38,22 @@
             *ngIf="form.controls.email.errors && form.controls.email.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
-        <div class="d-flex w-100 justify-content-between">
+        <div
+          class="d-flex w-100 justify-content-between">
           <mat-form-field
             appearance="outline"
             class="w-75"
           >
-            <mat-label>Telephone</mat-label>
+            <mat-label>Phone</mat-label>
             <span matPrefix>+380 &nbsp;</span>
             <input
-              type="tel"
+              formControlName="phone"
               matInput>
+            <mat-icon
+              class="cursor-pointer mr-3"
+              matTooltip="Phone field is required and should be from 9 to 10 symbols length"
+              *ngIf="form.controls.phone.errors && form.controls.phone.touched"
+              matSuffix>error_outline</mat-icon>
           </mat-form-field>
           <button
             class="addbtn"
@@ -63,18 +69,26 @@
             step="1"
             min="14"
             max="100"
-            formControlName="salary"
+            formControlName="age"
           >
           <mat-icon
             class="cursor-pointer mr-3"
             matTooltip="Age field is required and should be in range from 14 to 100"
-            *ngIf="form.controls.salary.errors && form.controls.salary.touched"
+            *ngIf="form.controls.age.errors && form.controls.age.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
-        <span>Photo</span>
+        <div class="d-flex">
+          <span>Photo</span>
+          <mat-icon
+            class="cursor-pointer ml-3"
+            matTooltip="At least one photo is required"
+            *ngIf="form.controls.photo.errors"
+            matSuffix>error_outline</mat-icon>
+        </div>
         <div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
           <input
             hidden
+            formControlName="photo"
             type="file"
             #fileInput
             (change)="uploadFile($event.target.files)">
@@ -82,7 +96,7 @@
         <div
           class="files-list"
           *ngFor="let file of files; let i = index">
-          <p>{{file}}</p>
+          <p>{{file.name}}</p>
           <button
             mat-icon-button
             color="warn"
@@ -96,11 +110,30 @@
           <mat-label>Resume</mat-label>
           <textarea
             matInput
+            formControlName="resume"
             mat-autosize
             matAutosizeMaxRows="15"
             matAutosizeMinRows="7"
             placeholder="Introduce yourself!"></textarea>
+          <mat-icon
+            class="cursor-pointer mr-3"
+            matTooltip="Resume field is required and should be from 30 to 300 symbols length"
+            *ngIf="form.controls.resume.errors && form.controls.resume.touched"
+            matSuffix>error_outline</mat-icon>
         </mat-form-field>
+        <div class="d-flex w-100 justify-content-end">
+          <button
+            class="mr-4"
+            [disabled]="form.invalid"
+            (click)="onclick('save')"
+            mat-raised-button
+            >Save</button>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="onclick('reset')"
+          >Clear</button>
+        </div>
       </form>
   </mat-card>
 </div>

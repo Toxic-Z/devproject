@@ -2,13 +2,18 @@ import { EmployeeAddress } from './employee-address';
 
 export interface Employee {
   name: string;
-  gender: string;
-  contactInfo: {
-    address: EmployeeAddress;
-    email: string;
-  };
+  email: string;
+  phone: string[];
+  age: number;
+  photo: File[] | File;
+  resume: string;
+  // gender: string;
+  // contactInfo: {
+  //   address: EmployeeAddress;
+  //   email: string;
+  // };
   addDate?: Date;
-  salary: number;
-  position: string;
-  id: number;
+  // salary: number;
+  // position: string;
+  id?: number;
 }
