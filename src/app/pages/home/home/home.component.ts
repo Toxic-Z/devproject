@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../shared/services/auth.service';
-import {User} from '../../../shared/interfaces/user';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
@@ -15,7 +14,8 @@ import {ApiService} from '../../../shared/services/api.service';
   styleUrls: ['./home.component.scss'],
   providers: [
     MatSnackBar
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
   isLoggedIn: Observable<boolean>;

@@ -1,12 +1,6 @@
-<div class="d-flex flex-column w-100 justify-content-center align-items-center">
-<!--  <h5-->
-<!--    class="mt-4"-->
-<!--  >You can fill the form below or login-->
-<!--    <span-->
-<!--      routerLink="login"-->
-<!--      class="cursor-pointer link"-->
-<!--    >there</span>-->
-<!--  </h5>-->
+<div
+  id="home"
+  class="d-flex flex-column w-100 justify-content-center align-items-center">
   <mat-card
     class="w-50 mt-5 formCard"
   >
@@ -44,6 +38,21 @@
             *ngIf="form.controls.email.errors && form.controls.email.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
+        <div class="d-flex w-100 justify-content-between">
+          <mat-form-field
+            appearance="outline"
+            class="w-75"
+          >
+            <mat-label>Telephone</mat-label>
+            <span matPrefix>+380 &nbsp;</span>
+            <input
+              type="tel"
+              matInput>
+          </mat-form-field>
+          <button
+            class="addbtn"
+            mat-raised-button >+</button>
+        </div>
         <mat-form-field
           class="w-100"
           appearance="outline">
@@ -62,6 +71,7 @@
             *ngIf="form.controls.salary.errors && form.controls.salary.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
+        <span>Photo</span>
         <div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
           <input
             hidden
@@ -91,163 +101,6 @@
             matAutosizeMinRows="7"
             placeholder="Introduce yourself!"></textarea>
         </mat-form-field>
-        <!--        <div-->
-<!--          mat-subheader-->
-<!--          class="d-flex w-100 justify-content-between"-->
-<!--        >-->
-<!--          <div class="d-flex align-items-center w-49">-->
-<!--            <mat-icon-->
-<!--              class="gender cursor-pointer"-->
-<!--              matTooltip="Click to change"-->
-<!--              (click)="form.get('gender').value === 'm' ? form.get('gender').setValue('f')  : form.get('gender').setValue('m')"-->
-<!--              [ngClass]="{-->
-<!--                iconMale: form.get('gender').value === 'm',-->
-<!--                iconFemale: form.get('gender').value === 'f'}"-->
-<!--            >wc</mat-icon>-->
-<!--            <mat-form-field appearance="legacy">-->
-<!--              <mat-label>Full legal name</mat-label>-->
-<!--              <input-->
-<!--                matInput-->
-<!--                formControlName="name"-->
-<!--                placeholder="Full legal name"-->
-<!--              >-->
-<!--              <mat-icon-->
-<!--                class="cursor-pointer mr-3"-->
-<!--                matTooltip="Name field is required and should be from 3 to 20 symbols length"-->
-<!--                *ngIf="form.controls.name.errors && form.controls.name.touched"-->
-<!--                matSuffix>error_outline</mat-icon>-->
-<!--              <span-->
-<!--              ></span>-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-<!--          <div class="d-flex w-49">-->
-<!--            <h6>Contact information</h6>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <mat-list-item class="w-100">-->
-<!--          <div class="d-flex w-100 flex-column">-->
-<!--            <div class="d-flex justify-content-between">-->
-<!--              <div class="d-flex flex-column w-50">-->
-<!--                <mat-form-field appearance="legacy">-->
-<!--                  <mat-label>Position</mat-label>-->
-<!--                  <input-->
-<!--                    matInput-->
-<!--                    formControlName="position"-->
-<!--                    placeholder="Position"-->
-<!--                  >-->
-<!--                  <mat-icon-->
-<!--                    class="cursor-pointer mr-3"-->
-<!--                    matTooltip="Position field is required and should be from 2 to 15 symbols length"-->
-<!--                    *ngIf="form.controls.position.errors && form.controls.position.touched"-->
-<!--                    matSuffix>error_outline</mat-icon>-->
-<!--                </mat-form-field>-->
-<!--                <mat-form-field appearance="legacy">-->
-<!--                  <mat-label>Salary(USD)</mat-label>-->
-<!--                  <input-->
-<!--                    matInput-->
-<!--                    type="number"-->
-<!--                    step="50"-->
-<!--                    formControlName="salary"-->
-<!--                    placeholder="Salary"-->
-<!--                  >-->
-<!--                  <mat-icon-->
-<!--                    class="cursor-pointer mr-3"-->
-<!--                    matTooltip="Salary field is required and should be in range from 500 to 5000000"-->
-<!--                    *ngIf="form.controls.salary.errors && form.controls.salary.touched"-->
-<!--                    matSuffix>error_outline</mat-icon>-->
-<!--                </mat-form-field>-->
-<!--                <mat-form-field appearance="legacy">-->
-<!--                  <mat-label>E-mail</mat-label>-->
-<!--                  <input-->
-<!--                    matInput-->
-<!--                    formControlName="email"-->
-<!--                    placeholder="E-mail"-->
-<!--                  >-->
-<!--                  <mat-icon-->
-<!--                    class="cursor-pointer mr-3"-->
-<!--                    matTooltip="E-mail field is required and should be from 6 to 30 symbols length"-->
-<!--                    *ngIf="form.controls.email.errors && form.controls.email.touched"-->
-<!--                    matSuffix>error_outline</mat-icon>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="d-flex flex-column w-50">-->
-<!--                <mat-form-field appearance="legacy">-->
-<!--                  <mat-label>City</mat-label>-->
-<!--                  <input-->
-<!--                    matInput-->
-<!--                    formControlName="city"-->
-<!--                    placeholder="City"-->
-<!--                  >-->
-<!--                  <mat-icon-->
-<!--                    class="cursor-pointer mr-3"-->
-<!--                    matTooltip="City field is required and should be from 3 to 15 symbols length"-->
-<!--                    *ngIf="form.controls.city.errors && form.controls.city.touched"-->
-<!--                    matSuffix>error_outline</mat-icon>-->
-<!--                </mat-form-field>-->
-<!--                <mat-form-field appearance="legacy">-->
-<!--                  <mat-label>Street</mat-label>-->
-<!--                  <input-->
-<!--                    matInput-->
-<!--                    formControlName="street"-->
-<!--                    placeholder="Street"-->
-<!--                  >-->
-<!--                  <mat-icon-->
-<!--                    class="cursor-pointer mr-3"-->
-<!--                    matTooltip="Street field is required and should be from 1 to 20 symbols length"-->
-<!--                    *ngIf="form.controls.position.errors && form.controls.position.touched"-->
-<!--                    matSuffix>error_outline</mat-icon>-->
-<!--                </mat-form-field>-->
-<!--                <div class="d-flex">-->
-<!--                  <mat-form-field-->
-<!--                    class="w-50"-->
-<!--                    appearance="legacy">-->
-<!--                    <mat-label>House number</mat-label>-->
-<!--                    <input-->
-<!--                      matInput-->
-<!--                      type="number"-->
-<!--                      formControlName="houseN"-->
-<!--                      placeholder="House number"-->
-<!--                    >-->
-<!--                    <mat-icon-->
-<!--                      class="cursor-pointer mr-3"-->
-<!--                      matTooltip="House number field is required and should be in range from 1 to 9999"-->
-<!--                      *ngIf="form.controls.houseN.errors && form.controls.houseN.touched"-->
-<!--                      matSuffix>error_outline</mat-icon>-->
-<!--                  </mat-form-field>-->
-<!--                  <mat-form-field-->
-<!--                    class="w-50"-->
-<!--                    appearance="legacy">-->
-<!--                    <mat-label>Additional number</mat-label>-->
-<!--                    <input-->
-<!--                      matInput-->
-<!--                      formControlName="addN"-->
-<!--                      placeholder="Additional number"-->
-<!--                    >-->
-<!--                  </mat-form-field>-->
-<!--                </div>-->
-
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="d-flex w-100 justify-content-between">-->
-<!--              <div class="d-flex h-50 w-100 justify-content-end">-->
-<!--                <button-->
-<!--                  mat-stroked-button-->
-<!--                  type="button"-->
-<!--                  [disabled]="form.invalid"-->
-<!--                  (click)="onclick('save')"-->
-<!--                  class="ml-5 mw-200px editbtn mr-3"-->
-<!--                >Save</button>-->
-<!--                <button-->
-<!--                  color="warn"-->
-<!--                  class="mw-200px"-->
-<!--                  (click)="onclick('reset')"-->
-<!--                  mat-stroked-button-->
-<!--                >Clear</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </mat-list-item>-->
       </form>
   </mat-card>
-
 </div>

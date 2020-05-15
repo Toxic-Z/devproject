@@ -2,8 +2,8 @@
   class="menu"
 >
   <div class="d-flex w-100 justify-content-between">
-    <div class="d-flex w-50 justify-content-between align-items-baseline">
-      <div class="d-flex w-25 cursor-pointer">
+    <div class="d-flex w-50 justify-content-between align-items-center flex-wrap">
+      <div class="d-flex w-25 cursor-pointer pl-5">
         <h5
           class="logo"
         >
@@ -16,10 +16,35 @@
         >work</mat-icon>
       </div>
       <span class="link">Home</span>
-      <span class="link">Courses</span>
+      <div
+        [matMenuTriggerFor]="courses"
+        class="d-flex cursor-pointer">
+        <span
+          [matMenuTriggerFor]="courses"
+          class="link">Courses</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </div>
       <span class="link">About</span>
       <span class="link">Video</span>
-      <span class="link">Interesting</span>
+      <div
+        [matMenuTriggerFor]="interesting"
+        class="d-flex cursor-pointer">
+        <span
+          class="link">Interesting</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </div>
+      <mat-menu #courses="matMenu">
+        <button mat-menu-item>Progect management</button>
+        <button mat-menu-item>Android development</button>
+        <button mat-menu-item>Online marketing</button>
+        <button mat-menu-item>Front-end developer</button>
+      </mat-menu>
+      <mat-menu #interesting="matMenu">
+        <button mat-menu-item>Blog</button>
+        <button mat-menu-item>Youtube</button>
+        <button mat-menu-item>Team</button>
+        <button mat-menu-item>Community</button>
+      </mat-menu>
 <!--      <button-->
 <!--        *ngIf="isLoggedIn|async"-->
 <!--        [disabled]="router.url.includes('admin')"-->

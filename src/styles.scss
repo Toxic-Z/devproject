@@ -8,9 +8,36 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-image: url("https://files.123freevectors.com/wp-content/original/119152-abstract-baby-blue-background-image.jpg");
 }
+.link {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
 .cursor-pointer {
   cursor: pointer;
 }
 .mw-250px {
   min-width: 250px;
+}
+.px-50px {
+  padding: 0px 50px!important;
+}
+.h-auto {
+  height: auto!important;
+}
+.h-30px {
+  height: 30px!important;
+}
+.hiddenarrows {
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
 }

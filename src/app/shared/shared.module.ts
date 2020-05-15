@@ -8,6 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from '../app-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { FooterComponent } from './components/footer/footer.component';
+import {MatListModule} from '@angular/material/list';
+import {MatMenuModule} from '@angular/material/menu';
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
   // to be modified so a migrator for that version is not included.
@@ -59,19 +62,22 @@ const dbConfig: DBConfig  = {
   migrationFactory
 };
 @NgModule({
-    declarations: [DataLoaderComponent, MenuComponent],
+    declarations: [DataLoaderComponent, MenuComponent, FooterComponent],
   exports: [
     DataLoaderComponent,
-    MenuComponent
+    MenuComponent,
+    FooterComponent
   ],
-    imports: [
-        CommonModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        AppRoutingModule,
-        MatTooltipModule,
-        NgxIndexedDBModule.forRoot(dbConfig)
-    ]
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    AppRoutingModule,
+    MatTooltipModule,
+    NgxIndexedDBModule.forRoot(dbConfig),
+    MatListModule,
+    MatMenuModule
+  ]
 })
 export class SharedModule { }
