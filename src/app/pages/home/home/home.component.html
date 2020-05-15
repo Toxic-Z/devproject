@@ -97,7 +97,7 @@
         <div
           class="files-list"
           *ngFor="let file of files; let i = index">
-          <p>{{file.name}}</p>
+          <p>{{file.name}}&nbsp;&nbsp;({{file.size}} bytes)</p>
           <button
             mat-icon-button
             color="warn"

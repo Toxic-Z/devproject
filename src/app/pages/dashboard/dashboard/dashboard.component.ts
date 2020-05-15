@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../../shared/services/auth.service';
-import { ApiService } from '../../../shared/services/api.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonService } from '../../../shared/services/common.service';
-import { Employee } from '../../../shared/interfaces/employee';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ApiService} from '../../../shared/services/api.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CommonService} from '../../../shared/services/common.service';
+import {Employee} from '../../../shared/interfaces/employee';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +11,8 @@ import { Employee } from '../../../shared/interfaces/employee';
   styleUrls: ['./dashboard.component.scss'],
   providers: [
     MatSnackBar
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
   public files = [];
@@ -40,7 +40,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.fetchEmployees()
       .then(
         (employees: Employee[]) => {
-          console.log(employees);
           this.commonService.changeLoaderVisibility(false);
           this.employeesList = employees ? [...employees] : [];
           this.employeesList.forEach((e: Employee) => {
@@ -104,10 +103,9 @@ export class DashboardComponent implements OnInit {
           value: employee.photo,
           disabled: !this.checkEditListById(employee.id)
         },
-        [
-          Validators.required,
-          Validators.min(1),
-          Validators.max(9999)]),
+        // [
+        //   Validators.required]
+      ),
       resume: new FormControl({
           value: employee.resume,
           disabled: !this.checkEditListById(employee.id)
@@ -119,16 +117,20 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public uploadFile(event) {
+  public uploadFile(event, id) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      this.files.push(element);
+      this.files.push({f: element, id});
     }
   }
 
+  public fetchFiles(id: number) {
+    return this.files.filter(i => i.id === id);
+  }
+
   public deleteAttachment(index: number, id: number) {
-    this.files.splice(index, 1);
-    this.findForm(id).get('photo').setValue(null);
+    this.findForm(id).get('photo').setValue('');
+    ((document.getElementById(id.toString()))  as HTMLInputElement).value = '';
   }
 
   public findForm(id: number): FormGroup {
@@ -197,6 +199,7 @@ export class DashboardComponent implements OnInit {
       for (const control in this.employeeForms[index].form.controls) {
         this.employeeForms[index].form.get(`${control}`).disable();
       }
+      this.files = [];
     }
   }
 

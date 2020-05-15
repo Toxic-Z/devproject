@@ -10,14 +10,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../shared/guards/auth.guard';
-import { AdminComponent } from '../admin/admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent ],
     imports: [
         CommonModule,
         MatListModule,
@@ -28,7 +27,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
-        FormsModule,
+        FormsModule
     ]
 })
 export class DashboardModule { }

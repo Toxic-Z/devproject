@@ -19,14 +19,7 @@ import {ApiService} from '../../../shared/services/api.service';
 })
 export class HomeComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
-  count = 0;
   files: any = [];
-  // phoneArray: {count: number, value: string}[] = [
-  //   {
-  //     count: this.count,
-  //     value: ''
-  //   }
-  // ];
   form = new FormGroup({
     name: new FormControl(null,
       [
@@ -62,17 +55,8 @@ export class HomeComponent implements OnInit {
     private commonService: CommonService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private apiService: ApiService,
-    private router: Router
+    private apiService: ApiService
   ) {
-    // this.phoneArray.forEach(i => {
-    //   this.form.addControl(`phone${i.count}`,  new FormControl(null,
-    //     [
-    //       Validators.required,
-    //       Validators.minLength(9),
-    //       Validators.maxLength(10)]));
-    //   this.count++;
-    // });
   }
 
   ngOnInit(): void {

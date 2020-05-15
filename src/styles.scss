@@ -38,3 +38,43 @@ body {
   height: 55px;
   width: 15%;
 }
+.uploadFileContainer {
+  background-image: url("https://png2.cleanpng.com/sh/eab0bdae37926145f01c1d8d40d50905/L0KzQYm3U8IxN6FsfZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TgVxdJDmfJ9rYXPuhcG0ifNwNaZ1hNHqZD3nf8j1jP9ibF46edQ6MXa0c4ToVsJlO183SakDNUm1RYK8UsE2PWg3T6g7M0m1PsH1h5==/kisspng-computer-icons-upload-backup-ico-upload-download-5ab11f1c3a62d3.2178592515215572762392.png");
+  background-repeat: no-repeat;
+  background-size: 100px;
+  background-position: center;
+  height: 130px;
+  width: 100%;
+  margin: 20px auto;
+  border: 2px dashed #1C8ADB;
+  border-radius: 10px;
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
+}
+
+.files-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  margin: 10px auto;
+  background: #ffffff;
+  border: 1px dashed;
+  border-radius: 12px;
+  padding: 5px;
+  color: #1c8adb;
+}
+
+.files-list .delete-file {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.files-list .delete-file img {
+  width: 30px;
+}
