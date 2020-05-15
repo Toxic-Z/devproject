@@ -9,7 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
-import {AuthGuard} from '../../shared/guards/auth.guard';
+import { AuthGuard } from '../../shared/guards/auth.guard';
+import { AdminComponent } from '../admin/admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -17,17 +18,17 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [DashboardComponent],
-  imports: [
-    CommonModule,
-    MatListModule,
-    RouterModule.forChild(routes),
-    MatFormFieldModule,
-    MatIconModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        MatListModule,
+        RouterModule.forChild(routes),
+        MatFormFieldModule,
+        MatIconModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+    ]
 })
 export class DashboardModule { }

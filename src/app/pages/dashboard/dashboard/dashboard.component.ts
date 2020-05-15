@@ -15,7 +15,7 @@ import { Employee } from '../../../shared/interfaces/employee';
   ]
 })
 export class DashboardComponent implements OnInit {
-
+  public files = [];
   public employeeForms: {form: FormGroup, id: number}[] = [];
   public employeesList: Employee[] = [];
   public editableList: number[] = [];
@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
     this.apiService.fetchEmployees()
       .then(
         (employees: Employee[]) => {
+          console.log(employees);
           this.commonService.changeLoaderVisibility(false);
           this.employeesList = employees ? [...employees] : [];
           this.employeesList.forEach((e: Employee) => {
@@ -69,74 +70,65 @@ export class DashboardComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20)]),
-      gender: new FormControl({
-          value: employee.gender,
+      email: new FormControl({
+          value: employee.email,
           disabled: !this.checkEditListById(employee.id)
         },
         [
           Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(1)]),
+          Validators.minLength(6),
+          Validators.maxLength(30)]),
       addDate: new FormControl({
           value: employee.addDate,
           disabled: !this.checkEditListById(employee.id)
         },
         [
           Validators.required]),
-      salary: new FormControl({
-          value: employee.salary,
+      phone: new FormControl({
+          value: employee.phone,
           disabled: !this.checkEditListById(employee.id)
         },
         [
           Validators.required,
-          Validators.min(500),
-          Validators.max(5000000)]),
-      position: new FormControl({
-          value: employee.position,
+          Validators.minLength(9),
+          Validators.maxLength(10)]),
+      age: new FormControl({
+          value: employee.age,
           disabled: !this.checkEditListById(employee.id)
         },
         [
           Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(15)]),
-      city: new FormControl({
-          value: employee.contactInfo.address.city,
-          disabled: !this.checkEditListById(employee.id)},
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(15)]),
-      street: new FormControl({
-          value: employee.contactInfo.address.street,
-          disabled: !this.checkEditListById(employee.id)
-        },
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20)]),
-      addN: new FormControl({
-          value: employee.contactInfo.address.addN,
-          disabled: !this.checkEditListById(employee.id)
-        },
-        [
-          Validators.maxLength(3)]),
-      email: new FormControl({
-          value: employee.contactInfo.email,
-          disabled: !this.checkEditListById(employee.id)},
-        [
-          Validators.required,
-          Validators.email,
-          Validators.minLength(6),
-          Validators.maxLength(30)]),
-      houseN: new FormControl({
-          value: employee.contactInfo.address.houseN,
+          Validators.minLength(14),
+          Validators.maxLength(100)]),
+      photo: new FormControl({
+          value: employee.photo,
           disabled: !this.checkEditListById(employee.id)
         },
         [
           Validators.required,
           Validators.min(1),
-          Validators.max(9999)])
+          Validators.max(9999)]),
+      resume: new FormControl({
+          value: employee.resume,
+          disabled: !this.checkEditListById(employee.id)
+        },
+        [
+          Validators.required,
+          Validators.minLength(30),
+          Validators.maxLength(300)])
     });
+  }
+
+  public uploadFile(event) {
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      this.files.push(element);
+    }
+  }
+
+  public deleteAttachment(index: number, id: number) {
+    this.files.splice(index, 1);
+    this.findForm(id).get('photo').setValue(null);
   }
 
   public findForm(id: number): FormGroup {
@@ -161,19 +153,12 @@ export class DashboardComponent implements OnInit {
   public addNewEmployee(): void {
     const newEmployee: Employee = {
       name: null,
-      gender: 'm',
-      contactInfo: {
-        address: {
-          city: null,
-          street: null,
-          houseN: null,
-          addN: null
-        },
-        email: null,
-      },
+      email: null,
+      phone: null,
+      age: null,
+      photo: null,
+      resume: null,
       addDate: new Date(),
-      salary: null,
-      position: null,
       id: this.newItemsIdIndex
     };
     this.editableList.push(this.newItemsIdIndex);
@@ -215,13 +200,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public onGenderClick(employee: Employee): void {
-    if (this.checkEditListById(employee.id)) {
-      employee.gender === 'm' ? employee.gender = 'f' : employee.gender = 'm';
-    } else {
-      return;
-    }
-  }
+  // public onGenderClick(employee: Employee): void {
+  //   if (this.checkEditListById(employee.id)) {
+  //     employee.gender === 'm' ? employee.gender = 'f' : employee.gender = 'm';
+  //   } else {
+  //     return;
+  //   }
+  // }
 
   public deleteEmployee(id: number): void {
     this.apiService.deleteEmployee(id).then(
@@ -240,19 +225,12 @@ export class DashboardComponent implements OnInit {
     const form = this.findForm(employee.id).value;
     const value: Employee = {
       name: form.name,
-      position: form.position,
-      salary: form.salary,
-      gender: form.gender,
+      email: form.email,
+      phone: form.phone,
+      age: form.age,
       addDate: form.addDate,
-      contactInfo: {
-        email: form.email,
-        address: {
-          city: form.city,
-          addN: form.addN,
-          street: form.street,
-          houseN: form.houseN
-        }
-      },
+      photo: form.photo,
+      resume: form.resume,
       id: employee.id
     };
     switch (this.editableList.includes(employee.id)) {

@@ -115,7 +115,7 @@ export class HomeComponent implements OnInit {
         name: this.form.get('name').value,
         email: this.form.get('email').value,
         phone: this.form.get('phone').value,
-        photo: this.form.get('photo').value,
+        photo: this.files,
         age: this.form.get('age').value,
         resume: this.form.get('resume').value,
         id: Math.random()

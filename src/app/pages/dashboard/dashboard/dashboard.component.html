@@ -23,169 +23,295 @@
   <div *ngIf="employeeForms.length">
     <form
       [formGroup]="findForm(employee.id)"
-      *ngFor="let employee of fetchFilteredList()">
+      *ngFor="let employee of fetchFilteredList()"
+      class="w-100 p-2">
+      <mat-form-field
+        class="w-100"
+        appearance="outline">
+        <mat-label>Full legal name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Full legal name"
+        >
+        <mat-icon
+          class="cursor-pointer mr-3"
+          matTooltip="Name field is required and should be from 3 to 20 symbols length"
+          *ngIf="findForm(employee.id).controls.name.errors && findForm(employee.id).controls.name.touched"
+          matSuffix>error_outline</mat-icon>
+        <span
+        ></span>
+      </mat-form-field>
+      <mat-form-field
+        class="w-100"
+        appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input
+          matInput
+          formControlName="email"
+        >
+        <mat-icon
+          class="cursor-pointer mr-3"
+          matTooltip="E-mail field is required and should be from 6 to 30 symbols length"
+          *ngIf="findForm(employee.id).controls.email.errors && findForm(employee.id).controls.email.touched"
+          matSuffix>error_outline</mat-icon>
+      </mat-form-field>
       <div
-        mat-subheader
-        class="d-flex w-100 justify-content-between"
-      >
-        <div class="d-flex align-items-center w-49">
+        class="d-flex w-100 justify-content-between">
+        <mat-form-field
+          appearance="outline"
+          class="w-75"
+        >
+          <mat-label>Phone</mat-label>
+          <span matPrefix>+380 &nbsp;</span>
+          <input
+            formControlName="phone"
+            matInput>
           <mat-icon
-            class="gender"
-            [matTooltipDisabled]="!checkEditListById(employee.id)"
-            matTooltip="Click to change"
-            (click)="onGenderClick(employee)"
-            [ngClass]="{
-            iconMale: employee.gender === 'm',
-            'cursor-pointer': checkEditListById(employee.id),
-            iconFemale: employee.gender === 'f'}"
-          >wc</mat-icon>
-          <mat-form-field appearance="legacy">
-            <mat-label>Full legal name</mat-label>
-            <input
-              matInput
-              formControlName="name"
-              placeholder="Full legal name"
-            >
-            <mat-icon
-              class="cursor-pointer mr-3"
-              matTooltip="Name field is required and should be from 3 to 20 symbols length"
-              *ngIf="findForm(employee.id).controls.name.errors && findForm(employee.id).controls.name.touched"
-              matSuffix>error_outline</mat-icon>
-            <span
-            ></span>
-          </mat-form-field>
-        </div>
-        <div class="d-flex w-49">
-          <h6>Contact information</h6>
-        </div>
+            class="cursor-pointer mr-3"
+            matTooltip="Phone field is required and should be from 9 to 10 symbols length"
+            *ngIf="findForm(employee.id).controls.phone.errors && findForm(employee.id).controls.phone.touched"
+            matSuffix>error_outline</mat-icon>
+        </mat-form-field>
+        <button
+          class="addbtn"
+          mat-stroked-button >+</button>
       </div>
-      <mat-list-item class="w-100">
-        <div class="d-flex w-100 flex-column">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-column w-50">
-              <mat-form-field appearance="legacy">
-                <mat-label>Position</mat-label>
-                <input
-                  matInput
-                  formControlName="position"
-                  placeholder="Position"
-                >
-                <mat-icon
-                  class="cursor-pointer mr-3"
-                  matTooltip="Position field is required and should be from 2 to 15 symbols length"
-                  *ngIf="findForm(employee.id).controls.position.errors && findForm(employee.id).controls.position.touched"
-                  matSuffix>error_outline</mat-icon>
-              </mat-form-field>
-              <mat-form-field appearance="legacy">
-                <mat-label>Salary(USD)</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  step="50"
-                  formControlName="salary"
-                  placeholder="Salary"
-                >
-                <mat-icon
-                  class="cursor-pointer mr-3"
-                  matTooltip="Salary field is required and should be in range from 500 to 5000000"
-                  *ngIf="findForm(employee.id).controls.salary.errors && findForm(employee.id).controls.salary.touched"
-                  matSuffix>error_outline</mat-icon>
-              </mat-form-field>
-              <mat-form-field appearance="legacy">
-                <mat-label>E-mail</mat-label>
-                <input
-                  matInput
-                  formControlName="email"
-                  placeholder="E-mail"
-                >
-                <mat-icon
-                  class="cursor-pointer mr-3"
-                  matTooltip="E-mail field is required and should be from 6 to 30 symbols length"
-                  *ngIf="findForm(employee.id).controls.email.errors && findForm(employee.id).controls.email.touched"
-                  matSuffix>error_outline</mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="d-flex flex-column w-50">
-              <mat-form-field appearance="legacy">
-                <mat-label>City</mat-label>
-                <input
-                  matInput
-                  formControlName="city"
-                  placeholder="City"
-                >
-                <mat-icon
-                  class="cursor-pointer mr-3"
-                  matTooltip="City field is required and should be from 3 to 15 symbols length"
-                  *ngIf="findForm(employee.id).controls.city.errors && findForm(employee.id).controls.city.touched"
-                  matSuffix>error_outline</mat-icon>
-              </mat-form-field>
-              <mat-form-field appearance="legacy">
-                <mat-label>Street</mat-label>
-                <input
-                  matInput
-                  formControlName="street"
-                  placeholder="Street"
-                >
-                <mat-icon
-                  class="cursor-pointer mr-3"
-                  matTooltip="Street field is required and should be from 1 to 20 symbols length"
-                  *ngIf="findForm(employee.id).controls.position.errors && findForm(employee.id).controls.position.touched"
-                  matSuffix>error_outline</mat-icon>
-              </mat-form-field>
-              <div class="d-flex">
-                <mat-form-field
-                  class="w-50"
-                  appearance="legacy">
-                  <mat-label>House number</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    formControlName="houseN"
-                    placeholder="House number"
-                  >
-                  <mat-icon
-                    class="cursor-pointer mr-3"
-                    matTooltip="House number field is required and should be in range from 1 to 9999"
-                    *ngIf="findForm(employee.id).controls.houseN.errors && findForm(employee.id).controls.houseN.touched"
-                    matSuffix>error_outline</mat-icon>
-                </mat-form-field>
-                <mat-form-field
-                  class="w-50"
-                  appearance="legacy">
-                  <mat-label>Additional number</mat-label>
-                  <input
-                    matInput
-                    formControlName="addN"
-                    placeholder="Additional number"
-                  >
-                </mat-form-field>
-              </div>
-
-            </div>
+      <mat-form-field
+        class="w-100"
+        appearance="outline">
+        <mat-label>Age</mat-label>
+        <input
+          matInput
+          type="number"
+          step="1"
+          min="14"
+          max="100"
+          formControlName="age"
+        >
+        <mat-icon
+          class="cursor-pointer mr-3"
+          matTooltip="Age field is required and should be in range from 14 to 100"
+          *ngIf="findForm(employee.id).controls.age.errors && findForm(employee.id).controls.age.touched"
+          matSuffix>error_outline</mat-icon>
+      </mat-form-field>
+      <div class="d-flex">
+        <span>Attached files</span>
+        <mat-icon
+          class="cursor-pointer ml-3"
+          matTooltip="At least one photo is required"
+          *ngIf="findForm(employee.id).controls.photo.errors"
+          matSuffix>error_outline</mat-icon>
+      </div>
+      <ul>
+        <li
+          *ngFor="let file of employee.photo; let i = index">
+          <div class="d-flex align-items-baseline">
+            <span>{{file.name}}&nbsp;&nbsp;({{file.size}} bytes)</span>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteAttachment(i, employee.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
-          <div class="d-flex w-100 justify-content-between">
-            <div class="d-flex flex-column">
-              <span class="value">Created </span>
-              <span class="label mb-2">{{parseDate(employee.addDate)}}</span>
-            </div>
-            <div class="d-flex h-50">
-              <button
-                mat-stroked-button
-                type="button"
-                (click)="toAction(employee, 'edit')"
-                class="ml-5 mw-200px editbtn mr-3"
-              >{{checkEditListById(employee.id) ? 'Save' : 'Edit'}}</button>
-              <button
-                color="warn"
-                class="mw-200px"
-                (click)="toAction(employee, 'delete')"
-                mat-stroked-button
-              >{{checkEditListById(employee.id) ? 'Cancel' : 'Delete'}}</button>
-            </div>
-          </div>
-        </div>
-      </mat-list-item>
-      <mat-divider class="mb-2"></mat-divider>
+        </li>
+      </ul>
+      <mat-form-field
+        appearance="outline"
+        class="w-100">
+        <mat-label>Resume</mat-label>
+        <textarea
+          matInput
+          formControlName="resume"
+          mat-autosize
+          matAutosizeMaxRows="15"
+          matAutosizeMinRows="7"
+          placeholder="Introduce yourself!"></textarea>
+        <mat-icon
+          class="cursor-pointer mr-3"
+          matTooltip="Resume field is required and should be from 30 to 300 symbols length"
+          *ngIf="findForm(employee.id).controls.resume.errors && findForm(employee.id).controls.resume.touched"
+          matSuffix>error_outline</mat-icon>
+      </mat-form-field>
+      <div class="d-flex w-100 justify-content-end">
+        <button
+          class="mr-4"
+          (click)="toAction(employee, 'edit')"
+          mat-stroked-button
+        >{{checkEditListById(employee.id) ? 'Save' : 'Edit'}}</button>
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="toAction(employee, 'delete')"
+        >{{checkEditListById(employee.id) ? 'Cancel' : 'Delete'}}</button>
+      </div>
     </form>
+<!--    <form-->
+<!--      [formGroup]="findForm(employee.id)"-->
+<!--      *ngFor="let employee of fetchFilteredList()">-->
+<!--      <div-->
+<!--        mat-subheader-->
+<!--        class="d-flex w-100 justify-content-between"-->
+<!--      >-->
+<!--        <div class="d-flex align-items-center w-49">-->
+<!--          <mat-icon-->
+<!--            class="gender"-->
+<!--            [matTooltipDisabled]="!checkEditListById(employee.id)"-->
+<!--            matTooltip="Click to change"-->
+<!--            (click)="onGenderClick(employee)"-->
+<!--            [ngClass]="{-->
+<!--            iconMale: employee.gender === 'm',-->
+<!--            'cursor-pointer': checkEditListById(employee.id),-->
+<!--            iconFemale: employee.gender === 'f'}"-->
+<!--          >wc</mat-icon>-->
+<!--          <mat-form-field appearance="legacy">-->
+<!--            <mat-label>Full legal name</mat-label>-->
+<!--            <input-->
+<!--              matInput-->
+<!--              formControlName="name"-->
+<!--              placeholder="Full legal name"-->
+<!--            >-->
+<!--            <mat-icon-->
+<!--              class="cursor-pointer mr-3"-->
+<!--              matTooltip="Name field is required and should be from 3 to 20 symbols length"-->
+<!--              *ngIf="findForm(employee.id).controls.name.errors && findForm(employee.id).controls.name.touched"-->
+<!--              matSuffix>error_outline</mat-icon>-->
+<!--            <span-->
+<!--            ></span>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--        <div class="d-flex w-49">-->
+<!--          <h6>Contact information</h6>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <mat-list-item class="w-100">-->
+<!--        <div class="d-flex w-100 flex-column">-->
+<!--          <div class="d-flex justify-content-between">-->
+<!--            <div class="d-flex flex-column w-50">-->
+<!--              <mat-form-field appearance="legacy">-->
+<!--                <mat-label>Position</mat-label>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  formControlName="position"-->
+<!--                  placeholder="Position"-->
+<!--                >-->
+<!--                <mat-icon-->
+<!--                  class="cursor-pointer mr-3"-->
+<!--                  matTooltip="Position field is required and should be from 2 to 15 symbols length"-->
+<!--                  *ngIf="findForm(employee.id).controls.position.errors && findForm(employee.id).controls.position.touched"-->
+<!--                  matSuffix>error_outline</mat-icon>-->
+<!--              </mat-form-field>-->
+<!--              <mat-form-field appearance="legacy">-->
+<!--                <mat-label>Salary(USD)</mat-label>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  type="number"-->
+<!--                  step="50"-->
+<!--                  formControlName="salary"-->
+<!--                  placeholder="Salary"-->
+<!--                >-->
+<!--                <mat-icon-->
+<!--                  class="cursor-pointer mr-3"-->
+<!--                  matTooltip="Salary field is required and should be in range from 500 to 5000000"-->
+<!--                  *ngIf="findForm(employee.id).controls.salary.errors && findForm(employee.id).controls.salary.touched"-->
+<!--                  matSuffix>error_outline</mat-icon>-->
+<!--              </mat-form-field>-->
+<!--              <mat-form-field appearance="legacy">-->
+<!--                <mat-label>E-mail</mat-label>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  formControlName="email"-->
+<!--                  placeholder="E-mail"-->
+<!--                >-->
+<!--                <mat-icon-->
+<!--                  class="cursor-pointer mr-3"-->
+<!--                  matTooltip="E-mail field is required and should be from 6 to 30 symbols length"-->
+<!--                  *ngIf="findForm(employee.id).controls.email.errors && findForm(employee.id).controls.email.touched"-->
+<!--                  matSuffix>error_outline</mat-icon>-->
+<!--              </mat-form-field>-->
+<!--            </div>-->
+<!--            <div class="d-flex flex-column w-50">-->
+<!--              <mat-form-field appearance="legacy">-->
+<!--                <mat-label>City</mat-label>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  formControlName="city"-->
+<!--                  placeholder="City"-->
+<!--                >-->
+<!--                <mat-icon-->
+<!--                  class="cursor-pointer mr-3"-->
+<!--                  matTooltip="City field is required and should be from 3 to 15 symbols length"-->
+<!--                  *ngIf="findForm(employee.id).controls.city.errors && findForm(employee.id).controls.city.touched"-->
+<!--                  matSuffix>error_outline</mat-icon>-->
+<!--              </mat-form-field>-->
+<!--              <mat-form-field appearance="legacy">-->
+<!--                <mat-label>Street</mat-label>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  formControlName="street"-->
+<!--                  placeholder="Street"-->
+<!--                >-->
+<!--                <mat-icon-->
+<!--                  class="cursor-pointer mr-3"-->
+<!--                  matTooltip="Street field is required and should be from 1 to 20 symbols length"-->
+<!--                  *ngIf="findForm(employee.id).controls.position.errors && findForm(employee.id).controls.position.touched"-->
+<!--                  matSuffix>error_outline</mat-icon>-->
+<!--              </mat-form-field>-->
+<!--              <div class="d-flex">-->
+<!--                <mat-form-field-->
+<!--                  class="w-50"-->
+<!--                  appearance="legacy">-->
+<!--                  <mat-label>House number</mat-label>-->
+<!--                  <input-->
+<!--                    matInput-->
+<!--                    type="number"-->
+<!--                    formControlName="houseN"-->
+<!--                    placeholder="House number"-->
+<!--                  >-->
+<!--                  <mat-icon-->
+<!--                    class="cursor-pointer mr-3"-->
+<!--                    matTooltip="House number field is required and should be in range from 1 to 9999"-->
+<!--                    *ngIf="findForm(employee.id).controls.houseN.errors && findForm(employee.id).controls.houseN.touched"-->
+<!--                    matSuffix>error_outline</mat-icon>-->
+<!--                </mat-form-field>-->
+<!--                <mat-form-field-->
+<!--                  class="w-50"-->
+<!--                  appearance="legacy">-->
+<!--                  <mat-label>Additional number</mat-label>-->
+<!--                  <input-->
+<!--                    matInput-->
+<!--                    formControlName="addN"-->
+<!--                    placeholder="Additional number"-->
+<!--                  >-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="d-flex w-100 justify-content-between">-->
+<!--            <div class="d-flex flex-column">-->
+<!--              <span class="value">Created </span>-->
+<!--              <span class="label mb-2">{{parseDate(employee.addDate)}}</span>-->
+<!--            </div>-->
+<!--            <div class="d-flex h-50">-->
+<!--              <button-->
+<!--                mat-stroked-button-->
+<!--                type="button"-->
+<!--                (click)="toAction(employee, 'edit')"-->
+<!--                class="ml-5 mw-200px editbtn mr-3"-->
+<!--              >{{checkEditListById(employee.id) ? 'Save' : 'Edit'}}</button>-->
+<!--              <button-->
+<!--                color="warn"-->
+<!--                class="mw-200px"-->
+<!--                (click)="toAction(employee, 'delete')"-->
+<!--                mat-stroked-button-->
+<!--              >{{checkEditListById(employee.id) ? 'Cancel' : 'Delete'}}</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </mat-list-item>-->
+<!--      <mat-divider class="mb-2"></mat-divider>-->
+<!--    </form>-->
   </div>
 </mat-list>

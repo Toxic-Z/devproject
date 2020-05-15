@@ -4,6 +4,7 @@ html, body {
   height: 100%;
 }
 body {
+  overflow-y: auto;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-image: url("https://files.123freevectors.com/wp-content/original/119152-abstract-baby-blue-background-image.jpg");
@@ -29,15 +30,11 @@ body {
 .h-auto {
   height: auto!important;
 }
-.h-30px {
-  height: 30px!important;
+.h-15px {
+  height: 15px!important;
 }
-.hiddenarrows {
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
-  }
+.addbtn {
+  margin-top: 5px!important;
+  height: 55px;
+  width: 15%;
 }

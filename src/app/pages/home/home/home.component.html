@@ -88,6 +88,7 @@
         <div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
           <input
             hidden
+            id="photo"
             formControlName="photo"
             type="file"
             #fileInput

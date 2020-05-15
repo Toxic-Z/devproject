@@ -27,7 +27,7 @@ export function migrationFactory() {
 }
 const dbConfig: DBConfig  = {
   name: 'Database',
-  version: 3,
+  version: 4,
   objectStoresMeta: [
     {
       store: 'employees',

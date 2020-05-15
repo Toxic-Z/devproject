@@ -13,7 +13,7 @@ export class MenuComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   constructor(
     private authService: AuthService,
-    private router: Router
+    public router: Router
   ){}
 
   ngOnInit(): void {

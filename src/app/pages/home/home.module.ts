@@ -21,6 +21,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomeComponent, LoginComponent, DragDropDirective],
+  exports: [
+    DragDropDirective
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

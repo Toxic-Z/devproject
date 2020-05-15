@@ -5,7 +5,7 @@ export interface Employee {
   email: string;
   phone: string[];
   age: number;
-  photo: File[] | File;
+  photo: File[] | File | string;
   resume: string;
   // gender: string;
   // contactInfo: {
