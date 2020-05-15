@@ -109,7 +109,7 @@
         class="uploadFileContainer"
         (click)="this.checkEditListById(employee.id) ? fileInput.click() : null"
         appDragDrop
-        (FileDropped)="uploadFile($event)">
+        (FileDropped)="uploadFile($event, employee.id)">
         <input
           hidden
           disabled
