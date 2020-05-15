@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
 import { Employee } from '../interfaces/employee';
 import { CommonService } from './common.service';
-import { environment } from '../../../environments/environment';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-
   // private url = environment.apiUrl + 'employees/'; -- for real http
   constructor(
     // private httpClient: HttpClient, -- for real http

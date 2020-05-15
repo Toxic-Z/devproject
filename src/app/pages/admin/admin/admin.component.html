@@ -11,12 +11,17 @@
       disabled
       [(ngModel)]="currUser.login"
     >
-  </mat-form-field><mat-form-field appearance="outline">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
   <mat-label>Password</mat-label>
   <input
     matInput
     disabled
     [(ngModel)]="currUser.password"
   >
-</mat-form-field>
+  </mat-form-field>
+  <h2
+    class="linkbtn"
+    (click)="toDashboard()"
+  >Look at user's resumes...</h2>
 </div>
