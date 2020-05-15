@@ -34,7 +34,7 @@ const dbConfig: DBConfig  = {
       storeConfig: { keyPath: 'email', autoIncrement: false },
       storeSchema: [
         { name: 'name', keypath: 'name', options: { unique: false }},
-        { name: 'email', keypath: 'email', options: { unique: false }},
+        { name: 'email', keypath: 'email', options: { unique: true }},
         { name: 'phone', keypath: 'phone', options: { unique: false }},
         { name: 'addDate', keypath: 'addDate', options: { unique: false }},
         { name: 'age', keypath: 'age', options: { unique: false }},
