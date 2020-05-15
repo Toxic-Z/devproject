@@ -40,9 +40,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.fetchEmployees()
       .then(
         (employees: Employee[]) => {
-          if (!employees.length) {
-            this.apiService.flag = true;
-          }
           this.commonService.changeLoaderVisibility(false);
           this.employeesList = employees ? [...employees] : [];
           this.employeesList.forEach((e: Employee) => {
