@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -12,7 +12,8 @@ import { User } from '../../../shared/interfaces/user';
   styleUrls: ['./login.component.scss'],
   providers: [
     MatSnackBar
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
 
