@@ -70,15 +70,16 @@ export class HomeComponent implements OnInit {
   }
 
   public uploadFile(event) {
-    for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push(element);
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      Object.keys(fileList).map((i) => {
+          this.files.push(fileList[i]);
+      });
     }
   }
 
   public deleteAttachment(index) {
     this.files.splice(index, 1);
-    this.form.get('photo').setValue(null);
   }
 
   // public addPhone() {
@@ -93,6 +94,7 @@ export class HomeComponent implements OnInit {
   public onclick(type: string) {
     if (type === 'reset') {
       this.form.reset();
+      this.files = [];
     }
     if (type === 'save') {
       const value: Employee = {

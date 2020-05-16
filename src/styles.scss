@@ -78,3 +78,11 @@ body {
 .files-list .delete-file img {
   width: 30px;
 }
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+router-outlet + * {
+  flex: 1;
+}

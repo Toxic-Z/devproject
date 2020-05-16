@@ -1,8 +1,9 @@
 <mat-list
+  id="dashboardpage"
   class="w-100 p-4">
   <div class="d-flex w-100 justify-content-between align-items-baseline">
     <mat-form-field
-      class="w-50"
+      class="d-flex w-50"
       appearance="outline">
       <mat-label>Search...</mat-label>
       <input
@@ -21,7 +22,7 @@
     >Create new one</button>
   </div>
   <div
-    class="d-flex w-100"
+    class="d-flex w-100 flex-wrap"
     *ngIf="employeeForms.length">
     <form
       [formGroup]="findForm(employee.id)"
@@ -99,11 +100,6 @@
       </mat-form-field>
       <div class="d-flex">
         <span>Attached files</span>
-        <mat-icon
-          class="cursor-pointer ml-3"
-          matTooltip="At least one photo is required"
-          *ngIf="findForm(employee.id).controls.photo.errors"
-          matSuffix>error_outline</mat-icon>
       </div>
       <div
         class="uploadFileContainer"
@@ -111,24 +107,25 @@
         appDragDrop
         (FileDropped)="uploadFile($event, employee.id)">
         <input
+          multiple
           hidden
-          disabled
           [id]="employee.id"
-          formControlName="photo"
           type="file"
           #fileInput
-          (change)="uploadFile($event.target.files, employee.id)">
+          (change)="uploadFile($event, employee.id)">
       </div>
-      <ul *ngIf="employee.photo">
+      <ul
+        *ngIf="fetchFiles(employee.id).length"
+      >
         <li
-          *ngFor="let file of employee.photo; let i = index">
-          <div class="d-flex align-items-baseline">
+          *ngFor="let file of fetchFiles(employee.id)[0].files; let i = index">
+          <div class="d-flex align-items-baseline justify-content-between">
             <span>{{file.name}}&nbsp;&nbsp;({{file.size}} bytes)</span>
             <button
               mat-icon-button
-              disabled
               color="warn"
-              (click)="this.checkEditListById(employee.id) ? deleteAttachment(i, employee.id) : null">
+              [disabled]="!this.checkEditListById(employee.id)"
+              (click)="deleteFile(i, employee.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
