@@ -31,9 +31,8 @@ export class ApiService {
     // return this.httpClient.post<boolean>(this.url, employee); --for real http
   }
 
-  public deleteEmployee(id: number): Promise<any> {
-    console.log('sssss');
-    return this.dbService.delete('employees', id);
+  public deleteEmployee(email: string): Promise<any> {
+    return this.dbService.delete('employees', email);
     // return this.httpClient.delete<boolean>(this.url + id); --for real http
   }
 }

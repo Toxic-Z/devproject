@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
         (employees: Employee[]) => {
           this.commonService.changeLoaderVisibility(false);
           this.files = [];
+          this.temporaryFileArr = [];
           this.employeeForms = [];
           this.employeesList = employees ? [...employees] : [];
           this.initialStateOfEmployees = employees ? [...employees] : [];
@@ -52,6 +53,15 @@ export class DashboardComponent implements OnInit {
               }
             );
             if (e.photo.length) {
+              e.photo.forEach((file: File) => {
+                this.temporaryFileArr.push(
+                  {
+                    id: e.id,
+                    file,
+                    flag: false
+                  }
+                );
+              });
               this.files.push({
                 files: e.photo,
                 id: e.id,
@@ -125,15 +135,16 @@ export class DashboardComponent implements OnInit {
     const files: File[] = [];
     if (fileList.length > 0) {
       Object.keys(fileList).map((i) => {
-        this.temporaryFileArr.push({
-          id,
-          file: fileList[i],
-          flag: true
-        });
         if (index >= 0) {
           this.files[index].files.push(fileList[i]);
         } else {
           files.push(fileList[i]);
+        }
+        if (index < 0) {
+          this.files.push({
+            id,
+            files
+          });
         }
       });
     }
@@ -148,7 +159,8 @@ export class DashboardComponent implements OnInit {
       i.id === id);
     this.temporaryFileArr.push({
       id,
-      file: this.files[ind].files[index]
+      file: this.files[ind].files[index],
+      flag: false
     });
     this.files[ind].files.splice(index, 1);
   }
@@ -215,9 +227,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public deleteEmployee(id: number): void {
-    this.apiService.deleteEmployee(id).then(
-      () => {
+  public deleteEmployee(email: string): void {
+    this.apiService.deleteEmployee(email).then(
+      (r) => {
         this.commonService.changeLoaderVisibility(false);
         this.updateEmployeesList();
         this.showMessage('Deleted successfully!');
@@ -289,13 +301,14 @@ export class DashboardComponent implements OnInit {
               this.employeesList[eIndex] = this.initialStateOfEmployees.filter((e: Employee) => e.id === employee.id)[0];
               this.fromEditList(value);
               const initial: Employee = this.initialStateOfEmployees.filter((i: Employee) => i.id === employee.id)[0];
+              this.files[ind].files = [];
               this.temporaryFileArr
-                .filter(i => i.id === employee.id)
-                .filter(i => i.flag !== true).forEach(file => {
+                .filter(i => i.id === employee.id && i.flag === false)
+                .forEach(file => {
                 this.files[ind].files.push(file.file);
               });
-              this.temporaryFileArr = this.temporaryFileArr.filter(i => !i.flag).filter(i => i.id !== employee.id);
-              console.log(this.temporaryFileArr);
+              this.temporaryFileArr.filter(i => !(i.id === employee.id && i.flag === true))
+              this.temporaryFileArr = this.temporaryFileArr.filter(i => !(i.id === employee.id && i.flag === true));
               this.employeeForms.filter((i: {form: FormGroup, id: number}) => i.id === employee.id)[0].form = this.initForm(initial);
               break;
             }
@@ -308,7 +321,7 @@ export class DashboardComponent implements OnInit {
             this.toEditList(value);
             break;
           case 'delete':
-            this.deleteEmployee(employee.id);
+            this.deleteEmployee(employee.email);
             break;
         }
         break;
