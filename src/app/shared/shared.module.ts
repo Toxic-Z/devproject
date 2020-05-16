@@ -12,8 +12,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 export function migrationFactory() {
-  // The animal table was added with version 2 but none of the existing tables or data needed
-  // to be modified so a migrator for that version is not included.
   return {
     1: (db, transaction) => {
       // const store = transaction.objectStore('people');
@@ -27,7 +25,7 @@ export function migrationFactory() {
 }
 const dbConfig: DBConfig  = {
   name: 'Database',
-  version: 4,
+  version: 5,
   objectStoresMeta: [
     {
       store: 'employees',

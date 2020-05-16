@@ -32,6 +32,7 @@ export class ApiService {
   }
 
   public deleteEmployee(id: number): Promise<any> {
+    console.log('sssss');
     return this.dbService.delete('employees', id);
     // return this.httpClient.delete<boolean>(this.url + id); --for real http
   }

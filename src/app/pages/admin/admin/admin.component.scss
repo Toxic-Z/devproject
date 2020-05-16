@@ -1,7 +1,9 @@
-.linkbtn {
-  cursor: pointer;
-  letter-spacing: 1.5px;
-}
-.linkbtn:hover {
-  text-decoration: underline;
+#adminpage {
+  .linkbtn {
+    cursor: pointer;
+    letter-spacing: 1.5px;
+  }
+  .linkbtn:hover {
+    text-decoration: underline;
+  }
 }

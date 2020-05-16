@@ -85,7 +85,11 @@
             *ngIf="form.controls.photo.errors"
             matSuffix>error_outline</mat-icon>
         </div>
-        <div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
+        <div
+          class="uploadFileContainer"
+          (click)="fileInput.click()"
+          appDragDrop
+          (FileDropped)="uploadFile($event)">
           <input
             hidden
             id="photo"

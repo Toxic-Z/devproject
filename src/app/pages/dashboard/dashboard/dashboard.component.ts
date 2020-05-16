@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ApiService} from '../../../shared/services/api.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {CommonService} from '../../../shared/services/common.service';
-import {Employee} from '../../../shared/interfaces/employee';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../../shared/services/api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonService } from '../../../shared/services/common.service';
+import { Employee } from '../../../shared/interfaces/employee';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +15,8 @@ import {Employee} from '../../../shared/interfaces/employee';
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
-  public files = [];
+  public files: {files: File[], id: number, flag?: boolean}[] = [];
+  private temporaryFileArr: {file: File, id: number, flag?: boolean}[] = [];
   public employeeForms: {form: FormGroup, id: number}[] = [];
   public employeesList: Employee[] = [];
   public editableList: number[] = [];
@@ -28,9 +29,7 @@ export class DashboardComponent implements OnInit {
     private apiService: ApiService,
     private commonService: CommonService,
     private snackBar: MatSnackBar
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.updateEmployeesList();
@@ -41,7 +40,10 @@ export class DashboardComponent implements OnInit {
       .then(
         (employees: Employee[]) => {
           this.commonService.changeLoaderVisibility(false);
+          this.files = [];
+          this.employeeForms = [];
           this.employeesList = employees ? [...employees] : [];
+          this.initialStateOfEmployees = employees ? [...employees] : [];
           this.employeesList.forEach((e: Employee) => {
             this.employeeForms.push(
               {
@@ -49,8 +51,14 @@ export class DashboardComponent implements OnInit {
                 id: e.id
               }
             );
+            if (e.photo.length) {
+              this.files.push({
+                files: e.photo,
+                id: e.id,
+                flag: false
+              });
+            }
           });
-          this.employeeForms = [...this.employeeForms];
           this.commonService.changeLoaderVisibility(false);
         },
         (error => {
@@ -99,13 +107,6 @@ export class DashboardComponent implements OnInit {
           Validators.required,
           Validators.minLength(14),
           Validators.maxLength(100)]),
-      photo: new FormControl({
-          value: employee.photo,
-          disabled: !this.checkEditListById(employee.id)
-        },
-        // [
-        //   Validators.required]
-      ),
       resume: new FormControl({
           value: employee.resume,
           disabled: !this.checkEditListById(employee.id)
@@ -118,9 +119,23 @@ export class DashboardComponent implements OnInit {
   }
 
   public uploadFile(event, id) {
-    for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push({f: element, id});
+    const fileList: FileList = event.target.files;
+    const index = this.files.findIndex((i: {files: File[], id: number}) =>
+      i.id === id);
+    const files: File[] = [];
+    if (fileList.length > 0) {
+      Object.keys(fileList).map((i) => {
+        this.temporaryFileArr.push({
+          id,
+          file: fileList[i],
+          flag: true
+        });
+        if (index >= 0) {
+          this.files[index].files.push(fileList[i]);
+        } else {
+          files.push(fileList[i]);
+        }
+      });
     }
   }
 
@@ -128,9 +143,14 @@ export class DashboardComponent implements OnInit {
     return this.files.filter(i => i.id === id);
   }
 
-  public deleteAttachment(index: number, id: number) {
-    this.findForm(id).get('photo').setValue('');
-    ((document.getElementById(id.toString()))  as HTMLInputElement).value = '';
+  public deleteFile(index: number, id: number) {
+    const ind = this.files.findIndex((i: {files: File[], id: number}) =>
+      i.id === id);
+    this.temporaryFileArr.push({
+      id,
+      file: this.files[ind].files[index]
+    });
+    this.files[ind].files.splice(index, 1);
   }
 
   public findForm(id: number): FormGroup {
@@ -174,19 +194,12 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  public parseDate(date: Date): string {
-    return this.commonService.dateToMoment(date);
-  }
-
   public toEditList(employee: Employee): void {
     if (!this.editableList.includes(employee.id)) {
       this.editableList.push(employee.id);
-      this.initialStateOfEmployees.push(employee);
       const index = this.employeeForms.findIndex((i: {form: FormGroup, id: number}) => i.id === employee.id);
-      if (!this.isCreating) {
-        for (const control in this.employeeForms[index].form.controls) {
-          this.employeeForms[index].form.get(`${control}`).enable();
-        }
+      for (const control in this.employeeForms[index].form.controls) {
+        this.employeeForms[index].form.get(`${control}`).enable();
       }
     }
   }
@@ -199,17 +212,8 @@ export class DashboardComponent implements OnInit {
       for (const control in this.employeeForms[index].form.controls) {
         this.employeeForms[index].form.get(`${control}`).disable();
       }
-      this.files = [];
     }
   }
-
-  // public onGenderClick(employee: Employee): void {
-  //   if (this.checkEditListById(employee.id)) {
-  //     employee.gender === 'm' ? employee.gender = 'f' : employee.gender = 'm';
-  //   } else {
-  //     return;
-  //   }
-  // }
 
   public deleteEmployee(id: number): void {
     this.apiService.deleteEmployee(id).then(
@@ -232,7 +236,8 @@ export class DashboardComponent implements OnInit {
       phone: form.phone,
       age: form.age,
       addDate: form.addDate,
-      photo: form.photo,
+      photo: this.fetchFiles(employee.id).length ?
+        this.fetchFiles(employee.id)[0].files : [],
       resume: form.resume,
       id: employee.id
     };
@@ -240,6 +245,10 @@ export class DashboardComponent implements OnInit {
       case true:
         switch (type) {
           case 'edit':
+            if (!this.checkForFiles(employee.id)) {
+              this.showMessage('You should upload at least one file!');
+              return;
+            }
             if (employee.id === this.newItemsIdIndex && this.findForm(employee.id).valid) {
               this.apiService.createEmployee(value).then(
                 () => {
@@ -256,7 +265,6 @@ export class DashboardComponent implements OnInit {
             } else if (this.findForm(employee.id).valid) {
               this.apiService.updateEmployee(value).then(
                 () => {
-                  this.updateEmployeesList();
                   this.fromEditList(value);
                   this.showMessage('Updated successfully!');
                 },
@@ -276,13 +284,20 @@ export class DashboardComponent implements OnInit {
               this.employeesList.shift();
               this.isCreating = false;
             } else {
+              const ind = this.files.findIndex((i: {files: File[], id: number}) =>
+                i.id === employee.id);
               this.employeesList[eIndex] = this.initialStateOfEmployees.filter((e: Employee) => e.id === employee.id)[0];
-              if (!this.isCreating) {
-                this.fromEditList(value);
-                const initial: Employee = this.initialStateOfEmployees.filter((i: Employee) => i.id === employee.id)[0];
-                this.employeeForms.filter((i: {form: FormGroup, id: number}) => i.id === employee.id)[0].form = this.initForm(initial);
-                break;
-              }
+              this.fromEditList(value);
+              const initial: Employee = this.initialStateOfEmployees.filter((i: Employee) => i.id === employee.id)[0];
+              this.temporaryFileArr
+                .filter(i => i.id === employee.id)
+                .filter(i => i.flag !== true).forEach(file => {
+                this.files[ind].files.push(file.file);
+              });
+              this.temporaryFileArr = this.temporaryFileArr.filter(i => !i.flag).filter(i => i.id !== employee.id);
+              console.log(this.temporaryFileArr);
+              this.employeeForms.filter((i: {form: FormGroup, id: number}) => i.id === employee.id)[0].form = this.initForm(initial);
+              break;
             }
             break;
         }
@@ -298,6 +313,10 @@ export class DashboardComponent implements OnInit {
         }
         break;
     }
+  }
+
+  public checkForFiles(id: number): boolean {
+    return !!(this.fetchFiles(id).length && this.fetchFiles(id)[0].files.length);
   }
 
   public checkEditListById(id: number): boolean {

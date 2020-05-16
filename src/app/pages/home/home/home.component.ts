@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
 
   public deleteAttachment(index) {
     this.files.splice(index, 1);
-    this.form.get('photo').setValue(null);
+    this.form.get('photo').setValue(this.files);
   }
 
   // public addPhone() {
