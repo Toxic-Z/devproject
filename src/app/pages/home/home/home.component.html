@@ -92,11 +92,12 @@
           (FileDropped)="uploadFile($event)">
           <input
             hidden
+            multiple
             id="photo"
             formControlName="photo"
             type="file"
             #fileInput
-            (change)="uploadFile($event.target.files)">
+            (change)="uploadFile($event)">
         </div>
         <div
           class="files-list"
