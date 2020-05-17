@@ -38,8 +38,7 @@
             *ngIf="form.controls.email.errors && form.controls.email.touched"
             matSuffix>error_outline</mat-icon>
         </mat-form-field>
-        <div
-          class="d-flex w-100 justify-content-between">
+        <div class="d-flex w-100 justify-content-between">
           <mat-form-field
             appearance="outline"
             class="w-75"
@@ -47,18 +46,44 @@
             <mat-label>Phone</mat-label>
             <span matPrefix>+380 &nbsp;</span>
             <input
-              formControlName="phone"
+              id="newNumber"
               matInput>
-            <mat-icon
-              class="cursor-pointer mr-3"
-              matTooltip="Phone field is required and should be from 9 to 10 symbols length"
-              *ngIf="form.controls.phone.errors && form.controls.phone.touched"
-              matSuffix>error_outline</mat-icon>
           </mat-form-field>
           <button
+            (click)="addNumber()"
             class="addbtn"
             mat-raised-button >+</button>
         </div>
+        <div
+          formArrayName="phone"
+        >
+          <div
+            *ngFor="let phone of phoneFormGroup.controls; let i = index;"
+            class="d-flex w-100 justify-content-between">
+            <mat-form-field
+              appearance="outline"
+              [formGroupName]="i"
+              class="w-75"
+            >
+              <mat-label>Phone</mat-label>
+              <span matPrefix>+380 &nbsp;</span>
+              <input
+                formControlName="number"
+                matInput>
+              <mat-icon
+                class="cursor-pointer mr-3"
+                matTooltip="Phone field is required and should be from 9 to 10 symbols length"
+                *ngIf="getPhonesFormGroup(i).controls['number'].errors && getPhonesFormGroup(i).controls['number'].touched"
+                matSuffix>error_outline</mat-icon>
+            </mat-form-field>
+            <button
+              (click)="removeNumber(i)"
+              color="warn"
+              class="addbtn"
+              mat-raised-button >Delete</button>
+          </div>
+        </div>
+
         <mat-form-field
           class="w-100"
           appearance="outline">

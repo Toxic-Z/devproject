@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { ApiService } from '../../../shared/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonService } from '../../../shared/services/common.service';
@@ -24,8 +24,10 @@ export class DashboardComponent implements OnInit {
   private newItemsIdIndex = Math.random();
   private initialStateOfEmployees: Employee[] = [];
   public searchKeyWord = '';
+  public phoneListForm: {id: number, formArr: FormArray}[] = [];
 
   constructor(
+    private fb: FormBuilder,
     private apiService: ApiService,
     private commonService: CommonService,
     private snackBar: MatSnackBar
@@ -41,6 +43,7 @@ export class DashboardComponent implements OnInit {
         (employees: Employee[]) => {
           this.commonService.changeLoaderVisibility(false);
           this.files = [];
+          this.phoneListForm = [];
           this.temporaryFileArr = [];
           this.employeeForms = [];
           this.employeesList = employees ? [...employees] : [];
@@ -78,7 +81,13 @@ export class DashboardComponent implements OnInit {
   }
 
   private initForm(employee: Employee): FormGroup {
-    return new FormGroup({
+    const arr = [];
+    if (employee.phone.length) {
+      employee.phone.forEach(i => {
+        arr.push(this.createPhone(i));
+      });
+    }
+    return this.fb.group({
       name: new FormControl({
           value: employee.name,
           disabled: !this.checkEditListById(employee.id)
@@ -101,14 +110,7 @@ export class DashboardComponent implements OnInit {
         },
         [
           Validators.required]),
-      phone: new FormControl({
-          value: employee.phone,
-          disabled: !this.checkEditListById(employee.id)
-        },
-        [
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(10)]),
+      phone: arr,
       age: new FormControl({
           value: employee.age,
           disabled: !this.checkEditListById(employee.id)
@@ -125,6 +127,15 @@ export class DashboardComponent implements OnInit {
           Validators.required,
           Validators.minLength(30),
           Validators.maxLength(300)])
+    });
+  }
+
+  public createPhone(value: string = ''): FormGroup {
+    return this.fb.group({
+      number: [value, [
+        Validators.required,
+        Validators.minLength(9),
+        Validators.maxLength(10)]]
     });
   }
 
@@ -188,7 +199,7 @@ export class DashboardComponent implements OnInit {
     const newEmployee: Employee = {
       name: null,
       email: null,
-      phone: null,
+      phone: [],
       age: null,
       photo: null,
       resume: null,
@@ -308,7 +319,6 @@ export class DashboardComponent implements OnInit {
                 .forEach(file => {
                 this.files[ind].files.push(file.file);
               });
-              this.temporaryFileArr.filter(i => !(i.id === employee.id && i.flag === true))
               this.temporaryFileArr = this.temporaryFileArr.filter(i => !(i.id === employee.id && i.flag === true));
               this.employeeForms.filter((i: {form: FormGroup, id: number}) => i.id === employee.id)[0].form = this.initForm(initial);
               break;
@@ -335,5 +345,43 @@ export class DashboardComponent implements OnInit {
 
   public checkEditListById(id: number): boolean {
     return this.editableList.includes(id);
+  }
+
+  public getPhonesFormGroup(index: number, id: number): FormGroup {
+    const i = this.phoneListForm.findIndex(item => item.id === id);
+    if (i >= 0) {
+      this.phoneListForm[i].formArr = this.findForm(id).get('number') as FormArray;
+    } else {
+      this.phoneListForm.push({
+        id,
+        formArr: this.findForm(id).get('phone') as FormArray
+      });
+    }
+    return this.phoneListForm[this.phoneListForm.findIndex(item => item.id === id)].formArr.controls[index] as FormGroup;
+  }
+
+  phoneFormGroup(id: number): FormArray {
+    console.log(this.findForm(id).get('phone') as FormArray);
+    console.log(this.findForm(id));
+    console.log(this.employeesList);
+    return this.findForm(id).get('phone') as FormArray;
+  }
+
+  public addNumber(id: number) {
+    const ind = this.phoneListForm.findIndex(item => item.id === id);
+    console.log(ind);
+    if ((document.getElementById(id.toString()) as HTMLInputElement).value.length === 9 ||
+      (document.getElementById(id.toString()) as HTMLInputElement).value.length === 10) {
+      this.phoneListForm[ind].formArr.push(
+        this.createPhone((document.getElementById(id.toString()) as HTMLInputElement).value));
+      (document.getElementById(id.toString()) as HTMLInputElement).value = '';
+    } else {
+      this.showMessage('Phone number should be from 9 to 10 symbols length');
+    }
+  }
+
+  public removeNumber(index: number, id: number) {
+    const ind = this.phoneListForm.findIndex(item => item.id + index.toString() === `${id}${index}`);
+    this.phoneListForm[ind].formArr.removeAt(index);
   }
 }
