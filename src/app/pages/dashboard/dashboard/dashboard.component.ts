@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit {
     this.temporaryFileArr.push({
       id,
       file: this.files[ind].files[index],
-      flag: false
+      flag: true
     });
     this.files[ind].files.splice(index, 1);
   }
@@ -278,6 +278,7 @@ export class DashboardComponent implements OnInit {
               this.apiService.updateEmployee(value).then(
                 () => {
                   this.fromEditList(value);
+                  this.updateEmployeesList();
                   this.showMessage('Updated successfully!');
                 },
                 error => {
