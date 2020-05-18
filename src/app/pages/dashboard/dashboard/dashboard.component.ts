@@ -84,9 +84,14 @@ export class DashboardComponent implements OnInit {
     const arr = [];
     if (employee.phone.length) {
       employee.phone.forEach(i => {
-        arr.push(this.createPhone(i));
+        arr.push(this.createPhone(i, true));
       });
     }
+    this.phoneListForm.push({
+      id: employee.id,
+      formArr: this.fb.array(arr)
+    });
+    const index = this.phoneListForm.findIndex(i => i.id === employee.id);
     return this.fb.group({
       name: new FormControl({
           value: employee.name,
@@ -110,7 +115,7 @@ export class DashboardComponent implements OnInit {
         },
         [
           Validators.required]),
-      phone: arr,
+      phone: this.phoneListForm[index].formArr,
       age: new FormControl({
           value: employee.age,
           disabled: !this.checkEditListById(employee.id)
@@ -130,9 +135,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public createPhone(value: string = ''): FormGroup {
+  public createPhone(value: string = '', flag: boolean = false): FormGroup {
     return this.fb.group({
-      number: [value, [
+      number: [{
+        value,
+        disabled: flag
+      }, [
         Validators.required,
         Validators.minLength(9),
         Validators.maxLength(10)]]
@@ -252,11 +260,15 @@ export class DashboardComponent implements OnInit {
   }
 
   public toAction(employee: Employee, type: string): void {
+    const phones: string[] = [];
+    this.findForm(employee.id).get('phone').value.forEach(val => {
+      phones.push(val.number);
+    });
     const form = this.findForm(employee.id).value;
     const value: Employee = {
       name: form.name,
       email: form.email,
-      phone: form.phone,
+      phone: phones,
       age: form.age,
       addDate: form.addDate,
       photo: this.fetchFiles(employee.id).length ?
@@ -321,6 +333,7 @@ export class DashboardComponent implements OnInit {
               });
               this.temporaryFileArr = this.temporaryFileArr.filter(i => !(i.id === employee.id && i.flag === true));
               this.employeeForms.filter((i: {form: FormGroup, id: number}) => i.id === employee.id)[0].form = this.initForm(initial);
+              this.updateEmployeesList();
               break;
             }
             break;
@@ -350,7 +363,7 @@ export class DashboardComponent implements OnInit {
   public getPhonesFormGroup(index: number, id: number): FormGroup {
     const i = this.phoneListForm.findIndex(item => item.id === id);
     if (i >= 0) {
-      this.phoneListForm[i].formArr = this.findForm(id).get('number') as FormArray;
+      this.phoneListForm[i].formArr = this.findForm(id).get('phone') as FormArray;
     } else {
       this.phoneListForm.push({
         id,
@@ -361,27 +374,23 @@ export class DashboardComponent implements OnInit {
   }
 
   phoneFormGroup(id: number): FormArray {
-    console.log(this.findForm(id).get('phone') as FormArray);
-    console.log(this.findForm(id));
-    console.log(this.employeesList);
     return this.findForm(id).get('phone') as FormArray;
   }
 
   public addNumber(id: number) {
     const ind = this.phoneListForm.findIndex(item => item.id === id);
-    console.log(ind);
-    if ((document.getElementById(id.toString()) as HTMLInputElement).value.length === 9 ||
-      (document.getElementById(id.toString()) as HTMLInputElement).value.length === 10) {
+    if ((document.getElementById('newNum') as HTMLInputElement).value.length === 9 ||
+      (document.getElementById('newNum') as HTMLInputElement).value.length === 10) {
       this.phoneListForm[ind].formArr.push(
-        this.createPhone((document.getElementById(id.toString()) as HTMLInputElement).value));
-      (document.getElementById(id.toString()) as HTMLInputElement).value = '';
+        this.createPhone((document.getElementById('newNum') as HTMLInputElement).value));
+      (document.getElementById('newNum') as HTMLInputElement).value = '';
     } else {
       this.showMessage('Phone number should be from 9 to 10 symbols length');
     }
   }
 
   public removeNumber(index: number, id: number) {
-    const ind = this.phoneListForm.findIndex(item => item.id + index.toString() === `${id}${index}`);
+    const ind = this.phoneListForm.findIndex(item => item.id.toString() + index.toString() === `${id}${index}`);
     this.phoneListForm[ind].formArr.removeAt(index);
   }
 }

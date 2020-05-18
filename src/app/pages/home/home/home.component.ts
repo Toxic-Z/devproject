@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit {
     if (type === 'save') {
       const phones: string[] = [];
       this.form.get('phone').value.forEach(val => {
-        phones.push(val);
+        phones.push(val.number);
       });
       const value: Employee = {
         name: this.form.get('name').value,
