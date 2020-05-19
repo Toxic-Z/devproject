@@ -284,6 +284,10 @@ export class DashboardComponent implements OnInit {
               this.showMessage('You should upload at least one file!');
               return;
             }
+            if (!this.checkForPhone(employee.id)) {
+              this.showMessage('At least one phone number is required!');
+              return;
+            }
             if (employee.id === this.newItemsIdIndex && this.findForm(employee.id).valid) {
               this.apiService.createEmployee(value).then(
                 () => {
@@ -352,8 +356,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public checkForFiles(id: number): boolean {
+  private checkForFiles(id: number): boolean {
     return !!(this.fetchFiles(id).length && this.fetchFiles(id)[0].files.length);
+  }
+
+  private checkForPhone(id: number): boolean {
+    const index = this.phoneListForm.findIndex(i => i.id === id);
+    return !!(index >= 0 && this.phoneListForm[index].formArr.length);
   }
 
   public checkEditListById(id: number): boolean {
@@ -379,11 +388,11 @@ export class DashboardComponent implements OnInit {
 
   public addNumber(id: number) {
     const ind = this.phoneListForm.findIndex(item => item.id === id);
-    if ((document.getElementById('newNum') as HTMLInputElement).value.length === 9 ||
-      (document.getElementById('newNum') as HTMLInputElement).value.length === 10) {
+    if ((document.getElementById('newNum' + id) as HTMLInputElement).value.length === 9 ||
+      (document.getElementById('newNum' + id) as HTMLInputElement).value.length === 10) {
       this.phoneListForm[ind].formArr.push(
-        this.createPhone((document.getElementById('newNum') as HTMLInputElement).value));
-      (document.getElementById('newNum') as HTMLInputElement).value = '';
+        this.createPhone((document.getElementById('newNum' + id) as HTMLInputElement).value));
+      (document.getElementById('newNum' + id) as HTMLInputElement).value = '';
     } else {
       this.showMessage('Phone number should be from 9 to 10 symbols length');
     }

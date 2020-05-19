@@ -68,7 +68,7 @@
           <span matPrefix>+380 &nbsp;</span>
           <input
             [disabled]="!checkEditListById(employee.id)"
-            id="newNum"
+            [id]="'newNum' + employee.id"
             matInput>
         </mat-form-field>
         <button
